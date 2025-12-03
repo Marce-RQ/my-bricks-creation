@@ -1,101 +1,314 @@
 import Image from "next/image";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import BuildCard from "@/components/BuildCard";
+import type { PostWithImages } from "@/lib/types";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+async function getPosts(): Promise<PostWithImages[]> {
+	const supabase = await createClient();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+	const { data: posts, error } = await supabase
+		.from("posts")
+		.select("*")
+		.eq("status", "published")
+		.order("created_at", { ascending: false });
+
+	if (error || !posts) {
+		console.error("Error fetching posts:", error);
+		return [];
+	}
+
+	// Get images for each post
+	const postsWithImages = await Promise.all(
+		posts.map(async (post) => {
+			const { data: images } = await supabase
+				.from("post_images")
+				.select("*")
+				.eq("post_id", post.id)
+				.order("display_order", { ascending: true });
+
+			return {
+				...post,
+				images: images || [],
+			};
+		})
+	);
+
+	return postsWithImages;
+}
+
+export default async function HomePage() {
+	const posts = await getPosts();
+
+	return (
+		<div className="overflow-hidden">
+			{/* Hero Section */}
+			<section className="relative min-h-[80vh] flex items-center bg-gradient-to-br from-lego-bg via-white to-lego-yellow-50 pattern-dots">
+				{/* Decorative elements */}
+				<div className="absolute top-20 left-10 w-20 h-20 bg-lego-red/10 rounded-full blur-3xl" />
+				<div className="absolute bottom-20 right-10 w-32 h-32 bg-lego-blue/10 rounded-full blur-3xl" />
+				<div className="absolute top-1/2 left-1/4 w-4 h-4 bg-lego-yellow rounded-full animate-pulse-soft" />
+				<div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-lego-red rounded-full animate-pulse-soft delay-500" />
+
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
+					<div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+						{/* Avatar */}
+						<div className="relative animate-in">
+							{/* Glow effect */}
+							<div
+								className="absolute inset-0 bg-gradient-to-br from-lego-yellow to-lego-red 
+                            rounded-full blur-2xl opacity-30 scale-110 animate-pulse-soft"
+							/>
+
+							<div
+								className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden 
+                            ring-4 ring-white ring-offset-4 ring-offset-lego-yellow/20 
+                            shadow-2xl bg-gray-200"
+							>
+								<Image
+									src="/avatar.jpg"
+									alt="Young Master Builder"
+									width={256}
+									height={256}
+									className="object-cover w-full h-full"
+									priority
+								/>
+							</div>
+
+							{/* Floating Lego bricks around avatar */}
+							<div className="absolute -bottom-2 -right-4 text-4xl animate-float">
+								🧱
+							</div>
+							<div
+								className="absolute -bottom-6 right-8 text-3xl animate-float"
+								style={{ animationDelay: "200ms" }}
+							>
+								🟨
+							</div>
+							<div
+								className="absolute top-0 -right-8 text-3xl animate-float"
+								style={{ animationDelay: "400ms" }}
+							>
+								🟥
+							</div>
+							<div
+								className="absolute top-1/3 -left-6 text-2xl animate-float"
+								style={{ animationDelay: "600ms" }}
+							>
+								🟦
+							</div>
+							<div
+								className="absolute -bottom-4 left-4 text-2xl animate-float"
+								style={{ animationDelay: "300ms" }}
+							>
+								🟩
+							</div>
+							<div
+								className="absolute top-8 -left-4 text-3xl animate-float"
+								style={{ animationDelay: "500ms" }}
+							>
+								🧱
+							</div>
+
+							{/* Badge */}
+							<div
+								className="absolute -top-2 -left-2 bg-lego-red text-white px-3 py-1 
+                            rounded-full text-sm font-bold shadow-lg rotate-[-10deg]"
+							>
+								Master Builder
+							</div>
+						</div>
+
+						{/* Content */}
+						<div
+							className="text-center lg:text-left max-w-xl animate-in"
+							style={{ animationDelay: "100ms" }}
+						>
+							<div
+								className="inline-flex items-center gap-2 bg-lego-yellow/20 text-lego-dark 
+                            px-4 py-2 rounded-full text-sm font-medium mb-6"
+							>
+								<span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+								Building amazing things daily
+							</div>
+
+							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-lego-dark mb-6 leading-tight">
+								Hi, I&apos;m a{" "}
+								<span className="text-gradient inline-block">
+									Master Builder!
+								</span>
+							</h1>
+
+							<p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+								Welcome to my Lego portfolio! I love creating
+								amazing things with bricks. Each build tells a
+								story, and I can&apos;t wait to share them all
+								with you. 🚀
+							</p>
+
+							<div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+								<Link href="#gallery" className="btn-primary">
+									Explore Gallery
+									<svg
+										className="w-5 h-5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M19 9l-7 7-7-7"
+										/>
+									</svg>
+								</Link>
+								<Link href="/support" className="btn-outline">
+									❤️ Support My Creations
+								</Link>
+							</div>
+
+							{/* Stats */}
+							{posts.length > 0 && (
+								<div className="flex gap-8 justify-center lg:justify-start mt-10 pt-8 border-t border-gray-200">
+									<div>
+										<p className="text-3xl font-heading font-bold text-lego-dark">
+											{posts.length}
+										</p>
+										<p className="text-sm text-gray-500">
+											Creations
+										</p>
+									</div>
+									<div>
+										<p className="text-3xl font-heading font-bold text-lego-dark">
+											{posts
+												.reduce(
+													(acc, post) =>
+														acc +
+														(post.piece_count || 0),
+													0
+												)
+												.toLocaleString()}
+										</p>
+										<p className="text-sm text-gray-500">
+											Total Pieces
+										</p>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+				</div>
+
+				{/* Scroll indicator */}
+				<div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+					<svg
+						className="w-6 h-6 text-gray-400"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth={2}
+							d="M19 14l-7 7m0 0l-7-7m7 7V3"
+						/>
+					</svg>
+				</div>
+			</section>
+
+			{/* Gallery Section */}
+			<section id="gallery" className="py-20 sm:py-28 bg-white">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="text-center mb-16">
+						<span className="inline-block text-4xl mb-4 animate-float">
+							✨
+						</span>
+						<h2 className="section-heading">My Creations</h2>
+						<p className="section-subheading">
+							Each build is a new adventure. Click on any creation
+							to learn its story!
+						</p>
+					</div>
+
+					{posts.length > 0 ? (
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+							{posts.map((post, index) => (
+								<div
+									key={post.id}
+									className="animate-in"
+									style={{
+										animationDelay: `${index * 100}ms`,
+									}}
+								>
+									<BuildCard post={post} />
+								</div>
+							))}
+						</div>
+					) : (
+						<div className="text-center py-20">
+							<div
+								className="inline-flex items-center justify-center w-24 h-24 
+                            bg-lego-bg rounded-full mb-6"
+							>
+								<span className="text-5xl animate-float">
+									🏗️
+								</span>
+							</div>
+							<h3 className="text-2xl font-heading font-bold text-lego-dark mb-3">
+								Building in Progress
+							</h3>
+							<p className="text-lg text-gray-500 max-w-md mx-auto">
+								New creations are coming soon! Check back later
+								to see amazing Lego builds.
+							</p>
+						</div>
+					)}
+				</div>
+			</section>
+
+			{/* CTA Section */}
+			<section className="py-20 bg-gradient-to-br from-lego-dark via-gray-900 to-lego-dark relative overflow-hidden">
+				{/* Decorative bricks */}
+				<div className="absolute top-10 left-10 text-6xl opacity-10">
+					🧱
+				</div>
+				<div className="absolute bottom-10 right-10 text-8xl opacity-10">
+					🧱
+				</div>
+
+				<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+					<span className="text-5xl mb-6 block">❤️</span>
+					<h2 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-6">
+						Enjoyed my creations?
+					</h2>
+					<p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
+						Your support helps me buy more bricks and create even
+						more amazing builds. Every contribution makes a
+						difference!
+					</p>
+					<Link
+						href="/support"
+						className="btn-primary bg-lego-yellow text-lego-dark hover:bg-lego-yellow-300"
+					>
+						Support My Journey
+						<svg
+							className="w-5 h-5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M17 8l4 4m0 0l-4 4m4-4H3"
+							/>
+						</svg>
+					</Link>
+				</div>
+			</section>
+		</div>
+	);
 }

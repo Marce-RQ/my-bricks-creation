@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
 
 async function getStats() {
 	const supabase = await createClient();
@@ -26,7 +27,14 @@ async function getStats() {
 	};
 }
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	setRequestLocale(locale);
+
 	const supabase = await createClient();
 	const {
 		data: { user },
@@ -173,7 +181,6 @@ export default async function AdminDashboard() {
 
 					<Link
 						href="/"
-						target="_blank"
 						className="group flex items-center gap-4 p-4 rounded-xl bg-gray-100 
                      hover:bg-gray-800 transition-colors"
 					>

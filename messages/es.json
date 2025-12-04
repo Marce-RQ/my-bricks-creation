@@ -1,0 +1,101 @@
+{
+	"common": {
+		"home": "Inicio",
+		"support": "Apoyar",
+		"admin": "Admin",
+		"login": "Iniciar Sesión",
+		"logout": "Cerrar Sesión",
+		"loading": "Cargando...",
+		"error": "Error",
+		"success": "Éxito",
+		"save": "Guardar",
+		"cancel": "Cancelar",
+		"delete": "Eliminar",
+		"edit": "Editar",
+		"create": "Crear",
+		"back": "Volver",
+		"viewAll": "Ver Todo"
+	},
+	"hero": {
+		"badge": "Master Builder",
+		"greeting": "Hola, soy",
+		"title": "¡El Pequeño Builder!",
+		"description": "¡Bienvenido a mi portafolio de Lego! Me encanta crear cosas increíbles con bloques. Cada construcción cuenta una historia, y no puedo esperar a compartirlas todas contigo. 🚀",
+		"exploreGallery": "Explorar Galería",
+		"supportCreations": "Apoya Mis Creaciones",
+		"creations": "Creaciones",
+		"totalPieces": "Piezas Totales"
+	},
+	"gallery": {
+		"title": "Mis Creaciones",
+		"subtitle": "¡Cada construcción es una nueva aventura. Haz clic en cualquier creación para conocer su historia!",
+		"emptyTitle": "Construcción en Progreso",
+		"emptyDescription": "¡Nuevas creaciones vienen pronto! Vuelve más tarde para ver increíbles construcciones de Lego.",
+		"pieces": "piezas",
+		"viewBuild": "Ver Construcción"
+	},
+	"cta": {
+		"title": "¿Te gustaron mis creaciones?",
+		"description": "Tu apoyo me ayuda a comprar más bloques y crear construcciones aún más increíbles. ¡Cada contribución hace la diferencia!",
+		"button": "Apoya Mi Aventura"
+	},
+	"support": {
+		"title": "Apoya Mis Creaciones",
+		"subtitle": "¡Tu apoyo me ayuda a comprar más bloques y crear construcciones aún más increíbles!",
+		"cryptoTitle": "Donaciones en Crypto",
+		"cryptoDescription": "Envía crypto para apoyar mi aventura LEGO:",
+		"copyAddress": "Copiar",
+		"copied": "¡Copiado!",
+		"thankYou": "¡Gracias!",
+		"thankYouMessage": "Cada contribución me ayuda a conseguir más bloques para construir creaciones increíbles. ¡Realmente aprecio tu apoyo! ❤️"
+	},
+	"build": {
+		"pieces": "piezas",
+		"started": "Iniciado",
+		"completed": "Completado",
+		"backToGallery": "Volver a la Galería",
+		"notFound": "Construcción No Encontrada",
+		"notFoundDescription": "La construcción que buscas no existe o ha sido eliminada."
+	},
+	"admin": {
+		"dashboard": "Panel",
+		"posts": "Publicaciones",
+		"newPost": "Nueva Publicación",
+		"editPost": "Editar Publicación",
+		"allPosts": "Todas las Publicaciones",
+		"published": "Publicado",
+		"draft": "Borrador",
+		"title": "Título",
+		"description": "Descripción",
+		"pieceCount": "Cantidad de Piezas",
+		"status": "Estado",
+		"images": "Imágenes",
+		"dateStarted": "Fecha de Inicio",
+		"dateCompleted": "Fecha de Finalización",
+		"saveAsDraft": "Guardar como Borrador",
+		"publish": "Publicar",
+		"update": "Actualizar",
+		"deleteConfirm": "¿Estás seguro de que quieres eliminar esta publicación?",
+		"noPostsYet": "Aún no hay publicaciones",
+		"createFirst": "¡Crea tu primera publicación!"
+	},
+	"login": {
+		"title": "Acceso Admin",
+		"email": "Correo Electrónico",
+		"password": "Contraseña",
+		"signIn": "Iniciar Sesión",
+		"signingIn": "Iniciando sesión...",
+		"welcomeBack": "¡Bienvenido de vuelta!",
+		"invalidCredentials": "Correo o contraseña inválidos"
+	},
+	"footer": {
+		"builtWith": "Hecho con",
+		"by": "por",
+		"rights": "Todos los derechos reservados."
+	},
+	"notFound": {
+		"title": "Página No Encontrada",
+		"description": "La página que buscas no existe.",
+		"backHome": "Volver al Inicio"
+	}
+}

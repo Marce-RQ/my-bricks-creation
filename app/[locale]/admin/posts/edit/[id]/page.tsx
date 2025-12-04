@@ -1,10 +1,11 @@
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
 import PostForm from "@/components/PostForm";
 import type { PostWithImages } from "@/lib/types";
 
 interface EditPostPageProps {
-	params: Promise<{ id: string }>;
+	params: Promise<{ locale: string; id: string }>;
 }
 
 async function getPost(id: string): Promise<PostWithImages | null> {
@@ -33,7 +34,9 @@ async function getPost(id: string): Promise<PostWithImages | null> {
 }
 
 export default async function EditPostPage({ params }: EditPostPageProps) {
-	const { id } = await params;
+	const { locale, id } = await params;
+	setRequestLocale(locale);
+
 	const supabase = await createClient();
 	const {
 		data: { user },

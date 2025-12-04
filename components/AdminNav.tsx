@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 export default function AdminNav() {
 	const pathname = usePathname();
@@ -57,7 +55,6 @@ export default function AdminNav() {
 						<Link
 							href="/"
 							className="text-gray-300 hover:text-white transition-colors text-sm"
-							target="_blank"
 						>
 							View Site ↗
 						</Link>

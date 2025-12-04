@@ -1,13 +1,14 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import ImageCarousel from "@/components/ImageCarousel";
 import { formatDate, truncateText } from "@/lib/utils";
 import type { PostWithImages } from "@/lib/types";
 
 interface BuildPageProps {
-	params: Promise<{ slug: string }>;
+	params: Promise<{ locale: string; slug: string }>;
 }
 
 async function getPost(slug: string): Promise<PostWithImages | null> {
@@ -67,7 +68,10 @@ export async function generateMetadata({
 }
 
 export default async function BuildPage({ params }: BuildPageProps) {
-	const { slug } = await params;
+	const { locale, slug } = await params;
+	setRequestLocale(locale);
+
+	const t = await getTranslations("build");
 	const post = await getPost(slug);
 
 	if (!post) {
@@ -102,7 +106,9 @@ export default async function BuildPage({ params }: BuildPageProps) {
 								/>
 							</svg>
 						</span>
-						<span className="font-medium">Back to Gallery</span>
+						<span className="font-medium">
+							{t("backToGallery")}
+						</span>
 					</Link>
 				</nav>
 
@@ -162,7 +168,7 @@ export default async function BuildPage({ params }: BuildPageProps) {
 										{post.piece_count.toLocaleString()}
 									</p>
 									<p className="text-sm text-gray-500">
-										Pieces
+										{t("pieces")}
 									</p>
 								</div>
 							)}
@@ -187,7 +193,7 @@ export default async function BuildPage({ params }: BuildPageProps) {
 										{formatDate(post.date_start)}
 									</p>
 									<p className="text-sm text-gray-500">
-										Started
+										{t("started")}
 									</p>
 								</div>
 							)}
@@ -212,7 +218,7 @@ export default async function BuildPage({ params }: BuildPageProps) {
 										{formatDate(post.date_completed)}
 									</p>
 									<p className="text-sm text-gray-500">
-										Completed
+										{t("completed")}
 									</p>
 								</div>
 							)}

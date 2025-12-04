@@ -1,6 +1,16 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export default function NotFound() {
+export default async function NotFound({
+	params,
+}: {
+	params?: Promise<{ locale: string }>;
+}) {
+	const locale = params ? (await params).locale : "en";
+	setRequestLocale(locale);
+
+	const t = await getTranslations("notFound");
+
 	return (
 		<div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-b from-lego-bg to-white">
 			<div className="text-center px-4 py-16 max-w-lg mx-auto">
@@ -15,12 +25,11 @@ export default function NotFound() {
 				</div>
 
 				<h1 className="text-3xl sm:text-4xl font-heading font-bold text-lego-dark mb-4">
-					Oops! Page Not Found
+					{t("title")}
 				</h1>
 
 				<p className="text-lg text-gray-500 mb-8 leading-relaxed">
-					Looks like this brick is missing from the collection.
-					Let&apos;s get you back to the gallery!
+					{t("description")}
 				</p>
 
 				<Link
@@ -40,7 +49,7 @@ export default function NotFound() {
 							d="M10 19l-7-7m0 0l7-7m-7 7h18"
 						/>
 					</svg>
-					Back to Gallery
+					{t("backHome")}
 				</Link>
 
 				{/* Decorative bricks */}

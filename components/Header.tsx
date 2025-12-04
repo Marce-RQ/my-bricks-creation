@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Header() {
 	return (
@@ -45,6 +46,7 @@ export default function Header() {
 						>
 							<span className="hidden sm:inline">❤️</span> Support
 						</Link>
+						<LanguageSwitcher />
 					</div>
 				</div>
 			</nav>

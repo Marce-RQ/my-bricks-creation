@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import BuildCard from "@/components/BuildCard";
 import type { PostWithImages } from "@/lib/types";
 
@@ -37,7 +38,15 @@ async function getPosts(): Promise<PostWithImages[]> {
 	return postsWithImages;
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	setRequestLocale(locale);
+
+	const t = await getTranslations();
 	const posts = await getPosts();
 
 	return (
@@ -47,8 +56,6 @@ export default async function HomePage() {
 				{/* Decorative elements */}
 				<div className="absolute top-20 left-10 w-20 h-20 bg-lego-red/10 rounded-full blur-3xl" />
 				<div className="absolute bottom-20 right-10 w-32 h-32 bg-lego-blue/10 rounded-full blur-3xl" />
-				<div className="absolute top-1/2 left-1/4 w-4 h-4 bg-lego-yellow rounded-full animate-pulse-soft" />
-				<div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-lego-red rounded-full animate-pulse-soft delay-500" />
 
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
 					<div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -66,7 +73,7 @@ export default async function HomePage() {
                             shadow-2xl bg-gray-200"
 							>
 								<Image
-									src="/avatar.jpg"
+									src="/avatar.svg"
 									alt="Young Master Builder"
 									width={256}
 									height={256}
@@ -115,7 +122,7 @@ export default async function HomePage() {
 								className="absolute -top-2 -left-2 bg-lego-red text-white px-3 py-1 
                             rounded-full text-sm font-bold shadow-lg rotate-[-10deg]"
 							>
-								Master Builder
+								{t("hero.badge")}
 							</div>
 						</div>
 
@@ -124,31 +131,20 @@ export default async function HomePage() {
 							className="text-center lg:text-left max-w-xl animate-in"
 							style={{ animationDelay: "100ms" }}
 						>
-							<div
-								className="inline-flex items-center gap-2 bg-lego-yellow/20 text-lego-dark 
-                            px-4 py-2 rounded-full text-sm font-medium mb-6"
-							>
-								<span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-								Building amazing things daily
-							</div>
-
 							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-lego-dark mb-6 leading-tight">
-								Hi, I&apos;m a{" "}
+								{t("hero.greeting")}{" "}
 								<span className="text-gradient inline-block">
-									Master Builder!
+									{t("hero.title")}
 								</span>
 							</h1>
 
 							<p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
-								Welcome to my Lego portfolio! I love creating
-								amazing things with bricks. Each build tells a
-								story, and I can&apos;t wait to share them all
-								with you. 🚀
+								{t("hero.description")}
 							</p>
 
 							<div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 								<Link href="#gallery" className="btn-primary">
-									Explore Gallery
+									{t("hero.exploreGallery")}
 									<svg
 										className="w-5 h-5"
 										fill="none"
@@ -164,7 +160,7 @@ export default async function HomePage() {
 									</svg>
 								</Link>
 								<Link href="/support" className="btn-outline">
-									❤️ Support My Creations
+									❤️ {t("hero.supportCreations")}
 								</Link>
 							</div>
 
@@ -176,7 +172,7 @@ export default async function HomePage() {
 											{posts.length}
 										</p>
 										<p className="text-sm text-gray-500">
-											Creations
+											{t("hero.creations")}
 										</p>
 									</div>
 									<div>
@@ -191,7 +187,7 @@ export default async function HomePage() {
 												.toLocaleString()}
 										</p>
 										<p className="text-sm text-gray-500">
-											Total Pieces
+											{t("hero.totalPieces")}
 										</p>
 									</div>
 								</div>
@@ -225,10 +221,11 @@ export default async function HomePage() {
 						<span className="inline-block text-4xl mb-4 animate-float">
 							✨
 						</span>
-						<h2 className="section-heading">My Creations</h2>
+						<h2 className="section-heading">
+							{t("gallery.title")}
+						</h2>
 						<p className="section-subheading">
-							Each build is a new adventure. Click on any creation
-							to learn its story!
+							{t("gallery.subtitle")}
 						</p>
 					</div>
 
@@ -257,11 +254,10 @@ export default async function HomePage() {
 								</span>
 							</div>
 							<h3 className="text-2xl font-heading font-bold text-lego-dark mb-3">
-								Building in Progress
+								{t("gallery.emptyTitle")}
 							</h3>
 							<p className="text-lg text-gray-500 max-w-md mx-auto">
-								New creations are coming soon! Check back later
-								to see amazing Lego builds.
+								{t("gallery.emptyDescription")}
 							</p>
 						</div>
 					)}
@@ -281,18 +277,16 @@ export default async function HomePage() {
 				<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 					<span className="text-5xl mb-6 block">❤️</span>
 					<h2 className="text-3xl sm:text-4xl font-heading font-bold text-white mb-6">
-						Enjoyed my creations?
+						{t("cta.title")}
 					</h2>
 					<p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
-						Your support helps me buy more bricks and create even
-						more amazing builds. Every contribution makes a
-						difference!
+						{t("cta.description")}
 					</p>
 					<Link
 						href="/support"
 						className="btn-primary bg-lego-yellow text-lego-dark hover:bg-lego-yellow-300"
 					>
-						Support My Journey
+						{t("cta.button")}
 						<svg
 							className="w-5 h-5"
 							fill="none"

@@ -1,11 +1,19 @@
 import LoginForm from "@/components/LoginForm";
 import type { Metadata } from "next";
+import { setRequestLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
 	title: "Admin Login | MyBricksCreations",
 };
 
-export default function LoginPage() {
+export default async function LoginPage({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	setRequestLocale(locale);
+
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-lego-bg py-12 px-4">
 			<div className="max-w-md w-full">

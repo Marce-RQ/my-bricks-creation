@@ -1,8 +1,16 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
 import PostForm from "@/components/PostForm";
 
-export default async function NewPostPage() {
+export default async function NewPostPage({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	setRequestLocale(locale);
+
 	const supabase = await createClient();
 	const {
 		data: { user },

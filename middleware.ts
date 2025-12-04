@@ -1,8 +1,21 @@
 import { updateSession } from "@/lib/supabase/middleware";
+import createMiddleware from "next-intl/middleware";
 import { type NextRequest } from "next/server";
+import { routing } from "@/i18n/routing";
+
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-	return await updateSession(request);
+	// First, handle the session update for Supabase auth
+	const sessionResponse = await updateSession(request);
+
+	// If the session update returned a redirect, return it
+	if (sessionResponse.headers.get("location")) {
+		return sessionResponse;
+	}
+
+	// Then, handle i18n routing
+	return intlMiddleware(request);
 }
 
 export const config = {

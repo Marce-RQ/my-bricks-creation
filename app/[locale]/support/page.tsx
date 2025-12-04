@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import CopyButton from "@/components/CopyButton";
 
 export const metadata: Metadata = {
@@ -65,7 +66,16 @@ const wallets = [
 	},
 ];
 
-export default function SupportPage() {
+export default async function SupportPage({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	setRequestLocale(locale);
+
+	const t = await getTranslations("support");
+
 	return (
 		<div className="min-h-screen bg-gradient-to-b from-lego-bg via-white to-lego-bg">
 			{/* Hero Section */}
@@ -85,15 +95,14 @@ export default function SupportPage() {
 					</div>
 
 					<h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-lego-dark mb-6">
-						Support My{" "}
-						<span className="text-gradient">Creations</span>
+						{t("title").split(" ").slice(0, 2).join(" ")}{" "}
+						<span className="text-gradient">
+							{t("title").split(" ").slice(2).join(" ")}
+						</span>
 					</h1>
 
 					<p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-						Thank you for checking out my Lego builds! If you&apos;d
-						like to support me and help me get more bricks for
-						future creations, you can send cryptocurrency donations
-						to the wallets below.
+						{t("subtitle")}
 					</p>
 				</div>
 			</section>
@@ -169,12 +178,10 @@ export default function SupportPage() {
 						<div className="relative z-10">
 							<span className="text-5xl mb-6 block">🙏</span>
 							<h2 className="text-2xl md:text-3xl font-heading font-bold mb-4">
-								Thank You for Your Support!
+								{t("thankYou")}
 							</h2>
 							<p className="text-gray-300 max-w-lg mx-auto leading-relaxed">
-								Every donation, no matter how small, helps me
-								buy more bricks and create more amazing builds.
-								Your support means the world to me!
+								{t("thankYouMessage")}
 							</p>
 
 							{/* Brick animation */}

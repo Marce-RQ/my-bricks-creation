@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
 import PostList from "@/components/PostList";
 import type { Post } from "@/lib/types";
 
@@ -20,7 +21,14 @@ async function getPosts(): Promise<Post[]> {
 	return posts || [];
 }
 
-export default async function PostsPage() {
+export default async function PostsPage({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}) {
+	const { locale } = await params;
+	setRequestLocale(locale);
+
 	const supabase = await createClient();
 	const {
 		data: { user },

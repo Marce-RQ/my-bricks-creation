@@ -160,7 +160,7 @@ export default function PostForm({ post }: PostFormProps) {
 			// Delete removed images
 			if (imagesToDelete.length > 0) {
 				for (const imageId of imagesToDelete) {
-					const image = existingImages.find(
+					const image = post?.images?.find(
 						(img) => img.id === imageId
 					);
 					if (image) {
@@ -181,10 +181,22 @@ export default function PostForm({ post }: PostFormProps) {
 				}
 			}
 
+			// Renumber existing images to have consecutive display_order starting from 0
+			if (existingImages.length > 0) {
+				for (let i = 0; i < existingImages.length; i++) {
+					const image = existingImages[i];
+					if (image.display_order !== i) {
+						await supabase
+							.from("post_images")
+							.update({ display_order: i })
+							.eq("id", image.id);
+					}
+				}
+			}
+
 			// Upload new images
 			if (newImages.length > 0 && postId) {
-				const startOrder =
-					existingImages.length - imagesToDelete.length;
+				const startOrder = existingImages.length;
 
 				let successCount = 0;
 				let failCount = 0;
@@ -267,11 +279,9 @@ export default function PostForm({ post }: PostFormProps) {
 	};
 
 	const handleNewImages = (files: File[]) => {
+		// existingImages is already filtered (removed images are excluded from state)
 		const totalImages =
-			existingImages.length -
-			imagesToDelete.length +
-			newImages.length +
-			files.length;
+			existingImages.length + newImages.length + files.length;
 
 		if (totalImages > 4) {
 			toast.error("Maximum 4 images allowed per build");

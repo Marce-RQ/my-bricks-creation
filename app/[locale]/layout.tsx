@@ -66,20 +66,27 @@ export default async function LocaleLayout({
 						position="top-right"
 						toastOptions={{
 							duration: 4000,
-							style: {
-								background: "#1F1F1F",
-								color: "#fff",
-								borderRadius: "8px",
-							},
 							success: {
+								style: {
+									background: "#ECFDF5",
+									color: "#065F46",
+									borderRadius: "8px",
+									border: "1px solid #A7F3D0",
+								},
 								iconTheme: {
-									primary: "#DA291C",
+									primary: "#10B981",
 									secondary: "#fff",
 								},
 							},
 							error: {
+								style: {
+									background: "#FEF2F2",
+									color: "#991B1B",
+									borderRadius: "8px",
+									border: "1px solid #FECACA",
+								},
 								iconTheme: {
-									primary: "#DA291C",
+									primary: "#DC2626",
 									secondary: "#fff",
 								},
 							},

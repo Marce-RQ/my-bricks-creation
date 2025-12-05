@@ -31,7 +31,7 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
 		<div className="space-y-4">
 			{/* Main Image */}
 			<div
-				className="relative aspect-square rounded-2xl overflow-hidden bg-gray-100 
+				className="relative aspect-square rounded-2xl overflow-hidden bg-gray-900 
                     shadow-soft group"
 			>
 				<Image
@@ -42,7 +42,7 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
 					}
 					fill
 					sizes="(max-width: 768px) 100vw, 50vw"
-					className="object-cover"
+					className="object-contain"
 					priority
 				/>
 
@@ -155,7 +155,7 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
 							key={image.id}
 							onClick={() => setActiveIndex(index)}
 							className={`relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 
-                         transition-all duration-300 ${
+                         bg-gray-800 transition-all duration-300 ${
 								index === activeIndex
 									? "ring-3 ring-lego-red ring-offset-2 scale-105 shadow-lg"
 									: "opacity-60 hover:opacity-100 hover:scale-105"
@@ -169,7 +169,7 @@ export default function ImageCarousel({ images, title }: ImageCarouselProps) {
 								}
 								fill
 								sizes="80px"
-								className="object-cover"
+								className="object-contain p-1"
 							/>
 						</button>
 					))}

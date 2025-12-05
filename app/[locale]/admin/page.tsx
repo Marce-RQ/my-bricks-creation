@@ -27,6 +27,60 @@ async function getStats() {
 	};
 }
 
+async function getStorageUsage() {
+	const supabase = await createClient();
+
+	// List all files in the build-images bucket
+	const { data: files, error } = await supabase.storage
+		.from("build-images")
+		.list("", {
+			limit: 1000,
+			offset: 0,
+		});
+
+	if (error || !files) {
+		return { usedBytes: 0, usedMB: 0, totalGB: 1, percentage: 0 };
+	}
+
+	// Calculate total size from file metadata
+	let totalBytes = 0;
+
+	// Files at root level
+	for (const file of files) {
+		if (file.metadata?.size) {
+			totalBytes += file.metadata.size;
+		}
+	}
+
+	// Also check for files in subdirectories (posts folders)
+	const folders = files.filter((f) => f.id === null); // Folders don't have an id
+
+	for (const folder of folders) {
+		const { data: subFiles } = await supabase.storage
+			.from("build-images")
+			.list(folder.name, { limit: 1000 });
+
+		if (subFiles) {
+			for (const file of subFiles) {
+				if (file.metadata?.size) {
+					totalBytes += file.metadata.size;
+				}
+			}
+		}
+	}
+
+	const usedMB = totalBytes / (1024 * 1024);
+	const totalGB = 1;
+	const percentage = (usedMB / (totalGB * 1024)) * 100;
+
+	return {
+		usedBytes: totalBytes,
+		usedMB: Math.round(usedMB * 100) / 100,
+		totalGB,
+		percentage: Math.min(percentage, 100),
+	};
+}
+
 export default async function AdminDashboard({
 	params,
 }: {
@@ -46,6 +100,7 @@ export default async function AdminDashboard({
 	}
 
 	const stats = await getStats();
+	const storageUsage = await getStorageUsage();
 
 	const statCards = [
 		{
@@ -210,12 +265,17 @@ export default async function AdminDashboard({
 						<span className="text-2xl">💾</span>
 						{t("storageUsage")}
 					</h2>
-					<span className="text-sm text-gray-500">0 MB / 1 GB</span>
+					<span className="text-sm text-gray-500">
+						{storageUsage.usedMB < 1
+							? `${Math.round(storageUsage.usedMB * 1024)} KB`
+							: `${storageUsage.usedMB} MB`}{" "}
+						/ {storageUsage.totalGB} GB
+					</span>
 				</div>
 				<div className="h-4 bg-gray-100 rounded-full overflow-hidden">
 					<div
 						className="h-full bg-gradient-to-r from-lego-blue to-lego-red rounded-full transition-all duration-500"
-						style={{ width: "0%" }}
+						style={{ width: `${storageUsage.percentage}%` }}
 					/>
 				</div>
 				<p className="text-xs text-gray-500 mt-3 flex items-center gap-1">

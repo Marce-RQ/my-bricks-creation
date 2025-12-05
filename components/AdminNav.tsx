@@ -56,7 +56,7 @@ export default function AdminNav() {
 							href="/"
 							className="text-gray-300 hover:text-white transition-colors text-sm"
 						>
-							View Site ↗
+							Back To User Site ↗
 						</Link>
 						<button
 							onClick={handleLogout}

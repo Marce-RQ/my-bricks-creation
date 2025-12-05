@@ -51,98 +51,120 @@ export default async function HomePage({
 
 	return (
 		<div className="overflow-hidden">
-			{/* Hero Section */}
-			<section className="relative min-h-[80vh] flex items-center bg-gradient-to-br from-lego-bg via-white to-lego-yellow-50 pattern-dots">
-				{/* Decorative elements */}
-				<div className="absolute top-20 left-10 w-20 h-20 bg-lego-red/10 rounded-full blur-3xl" />
-				<div className="absolute bottom-20 right-10 w-32 h-32 bg-lego-blue/10 rounded-full blur-3xl" />
+			{/* HERO SECTION - Split Layout */}
+			<section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-lego-bg via-white to-lego-yellow-50">
+				{/* Decorative color bar on left */}
+				<div className="hidden lg:block absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-lego-red via-lego-yellow to-lego-blue" />
 
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
-					<div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-						{/* Avatar */}
-						<div className="relative animate-in">
-							{/* Glow effect */}
-							<div
-								className="absolute inset-0 bg-gradient-to-br from-lego-yellow to-lego-red 
-                            rounded-full blur-2xl opacity-30 scale-110 animate-pulse-soft"
-							/>
-
-							<div
-								className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden 
-                            ring-4 ring-white ring-offset-4 ring-offset-lego-yellow/20 
-                            shadow-2xl bg-gray-200"
-							>
-								<Image
-									src="/avatar.svg"
-									alt="Young Master Builder"
-									width={256}
-									height={256}
-									className="object-cover w-full h-full"
-									priority
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+						{/* Left Side - Avatar */}
+						<div className="flex flex-col items-center lg:items-center order-1 animate-in">
+							{/* Avatar with colored border */}
+							<div className="relative">
+								{/* Decorative squares with bounce animation */}
+								<div
+									className="absolute -top-4 -left-4 w-8 h-8 bg-lego-red rounded-lg rotate-12 opacity-80 animate-bounce"
+									style={{ animationDuration: "2s" }}
 								/>
+								<div
+									className="absolute -bottom-3 -right-3 w-6 h-6 bg-lego-blue rounded-lg -rotate-12 opacity-80 animate-bounce"
+									style={{
+										animationDuration: "2.3s",
+										animationDelay: "0.2s",
+									}}
+								/>
+								<div
+									className="absolute top-5 -right-6 w-5 h-5 bg-green-500 rounded-lg rotate-45 opacity-90 animate-bounce"
+									style={{
+										animationDuration: "1.8s",
+										animationDelay: "0.4s",
+									}}
+								/>
+								<div
+									className="absolute -top-6 right-8 w-5 h-5 bg-red-500 rounded-lg -rotate-6 opacity-90 animate-bounce"
+									style={{
+										animationDuration: "2.1s",
+										animationDelay: "0.3s",
+									}}
+								/>
+								<div
+									className="absolute top-1/4 -left-6 w-6 h-6 bg-cyan-400 rounded-lg rotate-[30deg] opacity-80 animate-bounce"
+									style={{
+										animationDuration: "2.5s",
+										animationDelay: "0.5s",
+									}}
+								/>
+								<div
+									className="absolute bottom-1/4 -left-8 w-5 h-5 bg-green-500 rounded-lg -rotate-[20deg] opacity-90 animate-bounce"
+									style={{
+										animationDuration: "1.9s",
+										animationDelay: "0.1s",
+									}}
+								/>
+								<div
+									className="absolute -bottom-5 left-1/4 w-5 h-5 bg-cyan-400 rounded-lg rotate-[15deg] opacity-80 animate-bounce"
+									style={{
+										animationDuration: "2.2s",
+										animationDelay: "0.6s",
+									}}
+								/>
+
+								{/* Main avatar container */}
+								<div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+									{/* Outer gradient ring */}
+									<div className="absolute inset-0 rounded-full bg-gradient-to-br from-lego-yellow via-yellow-400 to-lego-red p-1.5 shadow-2xl">
+										{/* White ring */}
+										<div className="w-full h-full rounded-full bg-white p-1.5">
+											{/* Avatar */}
+											<div className="w-full h-full rounded-full overflow-hidden bg-gray-100">
+												<Image
+													src="/avatar.svg"
+													alt="Young Master Builder"
+													width={400}
+													height={400}
+													className="object-cover w-full h-full"
+													priority
+												/>
+											</div>
+										</div>
+									</div>
+
+									{/* Badge */}
+									<div className="absolute -top-[-2] left-4 sm:left-6 z-20 -rotate-[18deg]">
+										<div className="bg-lego-red text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
+											{t("hero.badge")}
+										</div>
+									</div>
+								</div>
 							</div>
 
-							{/* Floating Lego bricks around avatar */}
-							<div className="absolute -bottom-2 -right-4 text-4xl animate-float">
-								🧱
-							</div>
-							<div
-								className="absolute -bottom-6 right-8 text-3xl animate-float"
-								style={{ animationDelay: "200ms" }}
-							>
-								🟨
-							</div>
-							<div
-								className="absolute top-0 -right-8 text-3xl animate-float"
-								style={{ animationDelay: "400ms" }}
-							>
-								🟥
-							</div>
-							<div
-								className="absolute top-1/3 -left-6 text-2xl animate-float"
-								style={{ animationDelay: "600ms" }}
-							>
-								🟦
-							</div>
-							<div
-								className="absolute -bottom-4 left-4 text-2xl animate-float"
-								style={{ animationDelay: "300ms" }}
-							>
-								🟩
-							</div>
-							<div
-								className="absolute top-8 -left-4 text-3xl animate-float"
-								style={{ animationDelay: "500ms" }}
-							>
-								🧱
-							</div>
-
-							{/* Badge */}
-							<div
-								className="absolute -top-2 -left-2 bg-lego-red text-white px-3 py-1 
-                            rounded-full text-sm font-bold shadow-lg rotate-[-10deg]"
-							>
-								{t("hero.badge")}
+							{/* Status indicator */}
+							<div className="mt-6 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-gray-100">
+								<span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
+								<span className="text-sm font-medium text-gray-700">
+									{t("hero.status")}
+								</span>
 							</div>
 						</div>
 
-						{/* Content */}
+						{/* Right Side - Content */}
 						<div
-							className="text-center lg:text-left max-w-xl animate-in"
+							className="order-2 text-center lg:text-left animate-in"
 							style={{ animationDelay: "100ms" }}
 						>
-							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-lego-dark mb-6 leading-tight">
+							<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-heading font-bold text-lego-dark mb-4 sm:mb-6 leading-tight">
 								{t("hero.greeting")}{" "}
 								<span className="text-gradient inline-block">
 									{t("hero.title")}
 								</span>
 							</h1>
 
-							<p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+							<p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
 								{t("hero.description")}
 							</p>
 
-							<div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+							<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
 								<Link href="#gallery" className="btn-primary">
 									{t("hero.exploreGallery")}
 									<svg
@@ -166,17 +188,17 @@ export default async function HomePage({
 
 							{/* Stats */}
 							{posts.length > 0 && (
-								<div className="flex gap-8 justify-center lg:justify-start mt-10 pt-8 border-t border-gray-200">
+								<div className="flex gap-8 justify-center lg:justify-start mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-gray-200">
 									<div>
-										<p className="text-3xl font-heading font-bold text-lego-dark">
+										<p className="text-2xl sm:text-3xl font-heading font-bold text-lego-dark">
 											{posts.length}
 										</p>
-										<p className="text-sm text-gray-500">
+										<p className="text-xs sm:text-sm text-gray-500">
 											{t("hero.creations")}
 										</p>
 									</div>
 									<div>
-										<p className="text-3xl font-heading font-bold text-lego-dark">
+										<p className="text-2xl sm:text-3xl font-heading font-bold text-lego-dark">
 											{posts
 												.reduce(
 													(acc, post) =>
@@ -186,7 +208,7 @@ export default async function HomePage({
 												)
 												.toLocaleString()}
 										</p>
-										<p className="text-sm text-gray-500">
+										<p className="text-xs sm:text-sm text-gray-500">
 											{t("hero.totalPieces")}
 										</p>
 									</div>
@@ -197,7 +219,7 @@ export default async function HomePage({
 				</div>
 
 				{/* Scroll indicator */}
-				<div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+				<div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
 					<svg
 						className="w-6 h-6 text-gray-400"
 						fill="none"

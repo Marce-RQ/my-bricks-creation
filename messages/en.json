@@ -19,8 +19,9 @@
 	"hero": {
 		"badge": "Master Builder",
 		"greeting": "Hi, I'm a",
-		"title": "El Pequeño Builder!",
+		"title": "Master Builder",
 		"description": "Welcome to my Lego portfolio! I love creating amazing things with bricks. Each build tells a story, and I can't wait to share them all with you. 🚀",
+		"status": "Building amazing things daily",
 		"exploreGallery": "Explore Gallery",
 		"supportCreations": "Support My Creations",
 		"creations": "Creations",

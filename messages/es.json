@@ -18,9 +18,10 @@
 	},
 	"hero": {
 		"badge": "Master Builder",
-		"greeting": "Hola, soy",
-		"title": "¡El Pequeño Builder!",
+		"greeting": "Hola, soy un",
+		"title": "Master Builder",
 		"description": "¡Bienvenido a mi portafolio de Lego! Me encanta crear cosas increíbles con bloques. Cada construcción cuenta una historia, y no puedo esperar a compartirlas todas contigo. 🚀",
+		"status": "Construyendo cosas increíbles cada día",
 		"exploreGallery": "Explorar Galería",
 		"supportCreations": "Apoya Mis Creaciones",
 		"creations": "Creaciones",

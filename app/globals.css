@@ -131,10 +131,6 @@
 		@apply bg-white/80 backdrop-blur-lg;
 	}
 
-	.pattern-dots {
-		@apply bg-hero-pattern;
-	}
-
 	.animate-in {
 		@apply animate-slide-up;
 	}

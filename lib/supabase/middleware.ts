@@ -1,5 +1,12 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { routing } from "@/i18n/routing";
+
+const removeLocaleFromPath = (path: string) => {
+	const { locales } = routing;
+	const regex = new RegExp(`^/(${locales.join("|")})`);
+	return path.replace(regex, "");
+};
 
 export async function updateSession(request: NextRequest) {
 	let response = NextResponse.next({
@@ -54,13 +61,17 @@ export async function updateSession(request: NextRequest) {
 		}
 	);
 
-	// Refresh session if expired - important for Server Components
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	// Protect admin routes
-	if (request.nextUrl.pathname.startsWith("/admin")) {
+	const cleanPathname = removeLocaleFromPath(request.nextUrl.pathname);
+
+	// Protect admin routes (except the login page)
+	if (
+		cleanPathname.startsWith("/admin") &&
+		cleanPathname !== "/admin/login"
+	) {
 		if (!user) {
 			const loginUrl = new URL("/admin/login", request.url);
 			loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
@@ -69,7 +80,7 @@ export async function updateSession(request: NextRequest) {
 	}
 
 	// Redirect logged-in users away from login page
-	if (request.nextUrl.pathname === "/admin/login" && user) {
+	if (cleanPathname === "/admin/login" && user) {
 		return NextResponse.redirect(new URL("/admin", request.url));
 	}
 

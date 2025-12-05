@@ -138,10 +138,15 @@ export default function PostForm({ post }: PostFormProps) {
 				const startOrder =
 					existingImages.length - imagesToDelete.length;
 
+				let successCount = 0;
+				let failCount = 0;
+
 				for (let i = 0; i < newImages.length; i++) {
 					const file = newImages[i];
-					const fileName = `${Date.now()}-${file.name}`;
-					const filePath = `${postId}/${fileName}`;
+					// Sanitize filename: remove special chars, replace spaces with dashes
+					const extension = file.name.split(".").pop() || "jpg";
+					const sanitizedName = `${Date.now()}-${i}.${extension}`;
+					const filePath = `${postId}/${sanitizedName}`;
 
 					const { error: uploadError } = await supabase.storage
 						.from("build-images")
@@ -149,6 +154,7 @@ export default function PostForm({ post }: PostFormProps) {
 
 					if (uploadError) {
 						console.error("Upload error:", uploadError);
+						failCount++;
 						continue;
 					}
 
@@ -158,12 +164,31 @@ export default function PostForm({ post }: PostFormProps) {
 						.from("build-images")
 						.getPublicUrl(filePath);
 
-					await supabase.from("post_images").insert({
-						post_id: postId,
-						image_url: publicUrl,
-						display_order: startOrder + i,
-						alt_text: title,
-					});
+					const { error: insertError } = await supabase
+						.from("post_images")
+						.insert({
+							post_id: postId,
+							image_url: publicUrl,
+							display_order: startOrder + i,
+							alt_text: title,
+						});
+
+					if (insertError) {
+						console.error("Database insert error:", insertError);
+						failCount++;
+						continue;
+					}
+
+					successCount++;
+				}
+
+				// Show appropriate message based on upload results
+				if (failCount > 0 && successCount > 0) {
+					toast.error(
+						`${failCount} image(s) failed to upload. ${successCount} uploaded successfully.`
+					);
+				} else if (failCount > 0 && successCount === 0) {
+					toast.error(`All ${failCount} image(s) failed to upload.`);
 				}
 			}
 

@@ -1,16 +1,16 @@
-# PRD: MyBricksCreations.com (Simplified for Solo Dev)
+# PRD: MyBricksCreations.com
 
 **Project Name:** MyBricksCreations  
 **Domain:** MyBricksCreations.com  
-**Type:** Portfolio & Donation Site for a Young Lego Creator  
-**Tech Stack:** Next.js 14 (App Router), Tailwind CSS, Supabase (Auth, DB, Storage)  
+**Type:** Bilingual Portfolio & Donation Site for a Young Lego Creator  
+**Tech Stack:** Next.js 14 (App Router), Tailwind CSS, Supabase (Auth, DB, Storage), next-intl  
 **Developer:** Solo developer learning full-stack development with AI copilot
 
 ---
 
 ## 1. Core Concept
 
-A personal portfolio for a young "Master Builder" to showcase Lego creations. Features a gallery of builds with stories, multiple images per build, and crypto donation options.
+A personal bilingual portfolio for a young "Master Builder" to showcase Lego creations. Features a gallery of builds with stories, multiple images per build, crypto donation options, and full English/Spanish language support.
 
 ---
 
@@ -21,6 +21,7 @@ A personal portfolio for a young "Master Builder" to showcase Lego creations. Fe
 -   View gallery of published builds
 -   Read build details and stories
 -   Access support page with donation QR codes
+-   Switch between English and Spanish
 -   No login required
 
 ### Admin (You/Parent)
@@ -28,11 +29,37 @@ A personal portfolio for a young "Master Builder" to showcase Lego creations. Fe
 -   Full content management via admin panel
 -   Create, edit, and delete posts
 -   Upload and manage images (1-4 per build)
+-   Select cover image for each build
 -   Toggle post status (draft/published)
 
 ---
 
-## 3. Design System
+## 3. Internationalization (i18n)
+
+### Configuration
+
+-   **Library:** `next-intl`
+-   **Supported Locales:** English (`en`), Spanish (`es`)
+-   **Default Locale:** English
+
+### Implementation
+
+-   All routes prefixed with locale (e.g., `/en/builds/my-creation`, `/es/builds/my-creation`)
+-   Translation files in `messages/` folder
+-   `LanguageSwitcher` component in header with flag icons
+-   Middleware handles locale detection and routing
+
+### Translation Structure
+
+```
+messages/
+├── en.json    # English translations
+└── es.json    # Spanish translations
+```
+
+---
+
+## 4. Design System
 
 ### Philosophy
 
@@ -40,72 +67,140 @@ A personal portfolio for a young "Master Builder" to showcase Lego creations. Fe
 
 ### Color Palette
 
--   **Background:** White (`#FFFFFF`) or light grey (`#F5F5F5`)
--   **Primary Buttons:** Lego Red (`#DA291C`)
--   **Accents:** Lego Yellow (`#FFD500`) and Blue (`#0055BF`)
+**Primary Colors:**
+
+-   **Lego Red:** `#DA291C` (primary buttons, accents)
+-   **Lego Yellow:** `#FFD500` (highlights, badges)
+-   **Lego Blue:** `#0055BF` (secondary actions)
+
+**Extended Shades (50-900):**
+
+```
+lego-red:    #FEF2F1 → #DA291C → #711817
+lego-yellow: #FFFCE5 → #FFD500 → #724B10
+lego-blue:   #EFF6FF → #0055BF → #00285B
+```
+
+**Neutrals:**
+
+-   **Background:** White (`#FFFFFF`) or light grey (`#F8F9FA`)
 -   **Text:** Dark grey (`#1F1F1F`) body, black headings
 
 ### Typography
 
--   **Headings:** Rounded font (Nunito or Fredoka)
--   **Body:** Clean sans-serif (Inter or Geist)
+-   **Headings:** Nunito (rounded, friendly)
+-   **Body:** Inter (clean, readable)
 -   **Responsive sizes:** Mobile-first approach
 
 ### UI Components
 
--   **Buttons:** Rounded corners (8px), hover animations
--   **Cards:** Soft shadows, hover lift effect
+-   **Buttons:** Rounded corners (12px), hover animations, shadow effects
+    -   Primary: Red with glow shadow
+    -   Secondary: Blue solid
+    -   Outline: Red border, fill on hover
+    -   Ghost: Transparent with hover background
+    -   Gradient: Red gradient with elevated shadow
+-   **Cards:** Soft shadows, hover lift effect (16px radius)
 -   **Images:** Rounded corners (12px), lazy loading
 -   **Forms:** Clear labels, inline validation
+-   **Header:** Glass morphism effect, sticky positioning
+-   **Notifications:** Toast messages for user feedback
+
+### Animations
+
+-   Float: Gentle up/down movement
+-   Pulse-soft: Subtle breathing effect
+-   Slide-up: Content entrance
+-   Fade-in: Smooth opacity transition
+-   Bounce: Playful decorative elements
 
 ---
 
-## 4. Pages & Features
+## 5. Pages & Features
 
-### Home Page (`/`)
+### Home Page (`/[locale]/`)
 
 -   **Hero Section:**
-    -   Avatar/profile image
+
+    -   Avatar/profile image with decorative floating bricks
+    -   "Master Builder" badge
     -   "About Me" blurb (2-3 sentences)
-    -   Button to support page
+    -   Stats display (creations count, total pieces)
+    -   Buttons: Explore Gallery, Support My Creations
+
 -   **Gallery Grid:**
+
     -   Shows all published builds
     -   Responsive: 1 column (mobile), 2 (tablet), 3 (desktop)
-    -   Each card: Image, title, piece count
+    -   Each card: Cover image, title, piece count
     -   Newest first
 
-### Build Details Page (`/builds/[slug]`)
+-   **Call-to-Action Section:**
+    -   Encouragement to support
+    -   Link to support page
+
+### Build Details Page (`/[locale]/builds/[slug]`)
 
 -   **Image Carousel:** Up to 4 images with thumbnails
 -   **Build Info:**
     -   Title
     -   Story/description
-    -   Piece count
+    -   Piece count badge
+    -   Published date
     -   Start and completion dates
     -   Back to gallery link
+-   **Support CTA:** Encouragement to donate
 
-### Support Page (`/support`)
+### Support Page (`/[locale]/support`)
 
 -   QR codes for BTC, ETH, SOL
--   Wallet addresses (click to copy)
+-   Wallet addresses with click-to-copy functionality
 -   Brief explanation of donations
+-   Thank you message
 
-### Admin Dashboard (`/admin`)
+### Admin Login (`/[locale]/admin/login`)
 
--   **Login:** Email/password form
--   **Dashboard:**
-    -   Stats: Total builds, storage usage
-    -   Post list with edit/delete actions
-    -   Filter by status (all/drafts/published)
--   **Post Editor:**
-    -   Title, description, piece count
-    -   Date pickers
-    -   Image uploader (drag-and-drop, 1-4 images)
-    -   Save as draft or publish
+-   Email/password form
+-   Error message display
+-   Redirect to dashboard on success
+
+### Admin Dashboard (`/[locale]/admin`)
+
+-   **Stats Overview:**
+    -   Total builds count
+    -   Published vs drafts
+    -   Storage usage indicator
+-   **Quick Actions:**
+    -   Create new build
+    -   Manage posts
+    -   View public site
+-   **Navigation:** Sidebar with links
+
+### Post Manager (`/[locale]/admin/posts`)
+
+-   List of all posts
+-   Filter by status (all/drafts/published)
+-   Edit/delete actions per post
+-   Status badges
+
+### Post Editor (`/[locale]/admin/posts/new` & `/[locale]/admin/posts/edit/[id]`)
+
+-   **Form Fields:**
+    -   Title input
+    -   Description textarea
+    -   Piece count number input
+    -   Date pickers (start/completed)
+    -   Status toggle (draft/published)
+-   **Image Uploader:**
+    -   Drag-and-drop zone
+    -   Support for 1-4 images
+    -   Cover image selection
+    -   Image preview with remove option
+    -   Display order management
 
 ---
 
-## 5. Database Schema (Supabase)
+## 6. Database Schema (Supabase)
 
 ### Table: `posts`
 
@@ -179,7 +274,7 @@ CREATE POLICY "Authenticated users full access" ON post_images
 
 ---
 
-## 6. Image Handling
+## 7. Image Handling
 
 ### Accepted Formats
 
@@ -193,6 +288,12 @@ CREATE POLICY "Authenticated users full access" ON post_images
 -   Max images per build: 4
 -   Validation on client and server
 
+### Features
+
+-   **Drag-and-drop upload** using react-dropzone
+-   **Cover image selection:** First image or user-selected
+-   **Display order:** Configurable order for carousel
+
 ### Storage
 
 -   **Location:** Supabase Storage bucket `build-images`
@@ -204,7 +305,7 @@ CREATE POLICY "Authenticated users full access" ON post_images
 
 ---
 
-## 7. SEO Basics
+## 8. SEO Basics
 
 ### Meta Tags
 
@@ -212,16 +313,16 @@ CREATE POLICY "Authenticated users full access" ON post_images
 -   **Description:** First 160 chars of description
 -   **Open Graph:** og:image, og:type, og:url
 
-### URL Structure
+### URL Structure (Localized)
 
--   Gallery: `/`
--   Build: `/builds/{slug}`
--   Support: `/support`
--   Admin: `/admin`
+-   Gallery: `/en/` or `/es/`
+-   Build: `/en/builds/{slug}` or `/es/builds/{slug}`
+-   Support: `/en/support` or `/es/support`
+-   Admin: `/en/admin` or `/es/admin`
 
 ---
 
-## 8. Storage Management
+## 9. Storage Management
 
 ### Supabase Free Tier
 
@@ -232,7 +333,7 @@ CREATE POLICY "Authenticated users full access" ON post_images
 
 ---
 
-## 9. Error Handling
+## 10. Error Handling
 
 ### Upload Failures
 
@@ -242,7 +343,7 @@ CREATE POLICY "Authenticated users full access" ON post_images
 ### Authentication
 
 -   Failed login: Error message below form
--   Session expired: Redirect with message
+-   Session expired: Redirect to login with message
 
 ### Form Validation
 
@@ -254,10 +355,11 @@ CREATE POLICY "Authenticated users full access" ON post_images
 ### 404 Errors
 
 -   Custom 404 page with link back to gallery
+-   Localized error messages
 
 ---
 
-## 10. Security
+## 11. Security
 
 ### Supabase RLS
 
@@ -272,7 +374,7 @@ CREATE POLICY "Authenticated users full access" ON post_images
 
 ### Environment Variables
 
--   **Client (NEXT*PUBLIC*):**
+-   **Client (NEXT*PUBLIC*\*):**
     -   `NEXT_PUBLIC_SUPABASE_URL`
     -   `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 -   **Server only:**
@@ -281,7 +383,7 @@ CREATE POLICY "Authenticated users full access" ON post_images
 
 ---
 
-## 11. Deployment
+## 12. Deployment
 
 ### Hosting
 
@@ -297,7 +399,110 @@ CREATE POLICY "Authenticated users full access" ON post_images
 
 ---
 
-## 12. Out of Scope (V1)
+## 13. Dependencies
+
+```json
+{
+	"dependencies": {
+		"@supabase/ssr": "^0.8.0",
+		"@supabase/supabase-js": "^2.86.0",
+		"next": "14.2.33",
+		"next-intl": "^4.5.8",
+		"react": "^18",
+		"react-dom": "^18",
+		"react-dropzone": "^14.3.8",
+		"react-hot-toast": "^2.6.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"eslint": "^8",
+		"eslint-config-next": "14.2.33",
+		"postcss": "^8",
+		"tailwindcss": "^3.4.1",
+		"typescript": "^5"
+	}
+}
+```
+
+---
+
+## 14. Project Structure
+
+```
+mybrickscreations/
+├── app/
+│   ├── globals.css               # Global styles & component classes
+│   ├── layout.tsx                # Root layout
+│   └── [locale]/                 # Locale-based routing
+│       ├── page.tsx              # Home/Gallery
+│       ├── layout.tsx            # Locale layout with providers
+│       ├── not-found.tsx         # 404 page
+│       ├── builds/
+│       │   └── [slug]/
+│       │       └── page.tsx      # Build detail
+│       ├── support/
+│       │   └── page.tsx          # Donation page
+│       └── admin/
+│           ├── layout.tsx        # Protected admin layout
+│           ├── page.tsx          # Dashboard
+│           ├── login/
+│           │   └── page.tsx      # Login page
+│           └── posts/
+│               ├── page.tsx      # Post manager
+│               ├── new/
+│               │   └── page.tsx  # Create post
+│               └── edit/
+│                   └── [id]/
+│                       └── page.tsx  # Edit post
+├── components/
+│   ├── AdminNav.tsx              # Admin sidebar navigation
+│   ├── BuildCard.tsx             # Gallery card component
+│   ├── CopyButton.tsx            # Click-to-copy wallet addresses
+│   ├── Footer.tsx                # Site footer
+│   ├── Header.tsx                # Site header with nav
+│   ├── ImageCarousel.tsx         # Build image viewer
+│   ├── ImageUploader.tsx         # Drag-drop image upload
+│   ├── LanguageSwitcher.tsx      # EN/ES toggle
+│   ├── LoginForm.tsx             # Admin login form
+│   ├── PostForm.tsx              # Create/edit post form
+│   └── PostList.tsx              # Admin post list
+├── i18n/
+│   ├── config.ts                 # Locale configuration
+│   ├── navigation.ts             # Localized navigation helpers
+│   ├── request.ts                # Server-side i18n
+│   └── routing.ts                # Routing configuration
+├── lib/
+│   ├── types.ts                  # TypeScript types
+│   ├── utils.ts                  # Utility functions
+│   └── supabase/
+│       ├── client.ts             # Browser Supabase client
+│       ├── middleware.ts         # Auth session handler
+│       └── server.ts             # Server Supabase client
+├── messages/
+│   ├── en.json                   # English translations
+│   └── es.json                   # Spanish translations
+├── supabase/
+│   └── migrations/               # SQL migration scripts
+│       ├── 001_create_tables.sql
+│       └── 002_storage_policies.sql
+├── public/
+│   ├── avatar.svg                # Profile avatar
+│   ├── header-brand-image.png    # Logo/brand image
+│   └── ...                       # Other static assets
+├── middleware.ts                 # Combined auth + i18n middleware
+├── .env.local                    # Environment variables
+├── next.config.mjs
+├── tailwind.config.ts
+├── tsconfig.json
+├── postcss.config.mjs
+└── package.json
+```
+
+---
+
+## 15. Out of Scope (V1)
 
 Not included in first version:
 
@@ -312,57 +517,10 @@ Not included in first version:
 -   ❌ Multiple admin accounts
 -   ❌ Categories or tags
 -   ❌ Dark mode
-
----
-
-## 13. Project Structure
-
-```
-mybrickscreations/
-├── app/
-│   ├── page.tsx                  # Home/Gallery
-│   ├── builds/
-│   │   └── [slug]/
-│   │       └── page.tsx          # Build detail
-│   ├── support/
-│   │   └── page.tsx              # Donation page
-│   ├── admin/
-│   │   ├── layout.tsx            # Protected layout
-│   │   ├── page.tsx              # Dashboard
-│   │   └── posts/
-│   │       ├── page.tsx          # Post manager
-│   │       ├── new/
-│   │       │   └── page.tsx      # Create post
-│   │       └── edit/[id]/
-│   │           └── page.tsx      # Edit post
-│   ├── layout.tsx                # Root layout
-│   └── globals.css               # Global styles
-├── components/
-│   ├── BuildCard.tsx             # Gallery card
-│   ├── ImageCarousel.tsx         # Image viewer
-│   ├── AdminNav.tsx              # Admin nav
-│   └── ui/                       # Reusable components
-├── lib/
-│   ├── supabase/
-│   │   ├── client.ts             # Browser client
-│   │   └── server.ts             # Server client
-│   └── utils.ts                  # Utilities
-├── supabase/
-│   └── migrations/               # SQL scripts
-├── public/
-│   ├── qr-codes/                 # QR images
-│   └── avatar.jpg                # Profile image
-├── .env.local                    # Environment variables
-├── .gitignore
-├── package.json
-├── tailwind.config.js
-├── next.config.js
-└── README.md
-```
+-   ❌ Additional languages beyond EN/ES
 
 ---
 
 **Document Version:** 1.0  
 **Created:** December 2025  
-**Last Updated:** N/A  
 **Creator:** Marcelo Romero

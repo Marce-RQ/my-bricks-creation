@@ -17,9 +17,9 @@
 		"greeting": "Hi, I'm a",
 		"title": "Master Builder",
 		"description": "Welcome to my Lego portfolio! I love creating amazing things with bricks. Each build tells a story, and I can't wait to share them all with you. 🚀",
-		"status": "Building amazing things daily",
+		"status": "Building amazing things, one brick at a time!",
 		"exploreGallery": "Explore Gallery",
-		"supportCreations": "Support My Creations",
+		"supportCreations": "Support My Journey",
 		"creations": "Creations",
 		"totalPieces": "Total Pieces"
 	},
@@ -35,7 +35,7 @@
 		"button": "Support My Journey"
 	},
 	"support": {
-		"title": "Support My Creations",
+		"title": "Support My Journey",
 		"subtitle": "Your support helps me buy more bricks and create even more amazing builds!",
 		"thankYou": "Thank You!",
 		"thankYouMessage": "Every contribution helps me get more bricks to build amazing creations. I really appreciate your support! ❤️"

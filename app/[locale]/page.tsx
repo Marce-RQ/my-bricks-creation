@@ -231,7 +231,7 @@ export default async function HomePage({
 				</div>
 
 				{/* Scroll indicator */}
-				<div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
+				<div className="absolute bottom-6 left-0 right-0 flex justify-center animate-bounce">
 					<svg
 						className="w-6 h-6 text-gray-400"
 						fill="none"

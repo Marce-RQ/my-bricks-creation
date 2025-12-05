@@ -126,7 +126,7 @@ lego-blue:   #EFF6FF → #0055BF → #00285B
     -   "Master Builder" badge
     -   "About Me" blurb (2-3 sentences)
     -   Stats display (creations count, total pieces)
-    -   Buttons: Explore Gallery, Support My Creations
+    -   Buttons: Explore Gallery, Support My Journey
 
 -   **Gallery Grid:**
 

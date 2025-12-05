@@ -17,9 +17,9 @@
 		"greeting": "Hola, soy un",
 		"title": "Master Builder",
 		"description": "¡Bienvenido a mi portafolio de Lego! Me encanta crear cosas increíbles con bloques. Cada post cuenta una historia, y no puedo esperar a compartirlas todas contigo. 🚀",
-		"status": "Construyendo cosas increíbles cada día",
+		"status": "Construyendo cosas increíbles, un bloque a la vez!",
 		"exploreGallery": "Explorar Galería",
-		"supportCreations": "Apoya Mis Creaciones",
+		"supportCreations": "Apoya Mi Aventura",
 		"creations": "Creaciones",
 		"totalPieces": "Piezas Totales"
 	},
@@ -35,7 +35,7 @@
 		"button": "Apoya Mi Aventura"
 	},
 	"support": {
-		"title": "Apoya Mis Creaciones",
+		"title": "Apoya Mi Aventura",
 		"subtitle": "¡Tu apoyo me ayuda a comprar más bloques y crear publicaciones aún más increíbles!",
 		"thankYou": "¡Gracias!",
 		"thankYouMessage": "Cada contribución me ayuda a conseguir más bloques para construir creaciones increíbles. ¡Realmente aprecio tu apoyo! ❤️"

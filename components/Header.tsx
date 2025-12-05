@@ -15,20 +15,20 @@ export default function Header() {
 							<Image
 								src="/header-brand-image.png"
 								alt="Header Brand Image"
-								width={61}
-								height={61}
-								className="group-hover:animate-float inline-block transition-transform"
+								width={52}
+								height={52}
+								className="w-[44px] h-[44px] sm:w-[52px] sm:h-[52px] group-hover:animate-float inline-block transition-transform"
 							/>
 							<div
 								className="absolute -bottom-1 -right-1 w-3 h-3 bg-lego-yellow rounded-full 
                             opacity-0 group-hover:opacity-100 transition-opacity"
 							/>
 						</div>
-						<div className="hidden sm:block">
-							<span className="font-heading font-bold text-xl text-lego-dark">
+						<div>
+							<span className="font-heading font-bold text-lg sm:text-xl text-lego-dark">
 								MyBricks
 							</span>
-							<span className="font-heading font-bold text-xl text-lego-red">
+							<span className="font-heading font-bold text-lg sm:text-xl text-lego-red">
 								Creations
 							</span>
 						</div>
@@ -36,13 +36,6 @@ export default function Header() {
 
 					{/* Navigation */}
 					<div className="flex items-center gap-2 sm:gap-4">
-						<Link
-							href="/"
-							className="relative px-4 py-2 text-gray-600 hover:text-lego-dark 
-                         font-medium transition-all duration-300 border-b-2 border-transparent hover:border-lego-red"
-						>
-							{t("gallery")}
-						</Link>
 						<LanguageSwitcher />
 					</div>
 				</div>

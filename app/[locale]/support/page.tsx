@@ -88,13 +88,12 @@ export default async function SupportPage({
 					{/* Animated heart */}
 					<div
 						className="inline-flex items-center justify-center w-24 h-24 
-                        bg-gradient-to-br from-lego-red to-red-600 rounded-3xl 
-                        shadow-lg mb-8 animate-float"
+                        rounded-3xl mb-8 animate-float"
 					>
-						<span className="text-5xl">❤️</span>
+						<span className="text-5xl">🐼</span>
 					</div>
 
-					<h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-lego-dark mb-6">
+					<h1 className="text-5xl sm:text-5xl md:text-6xl font-heading font-bold text-lego-dark mb-6">
 						{t("title").split(" ").slice(0, 2).join(" ")}{" "}
 						<span className="text-gradient">
 							{t("title").split(" ").slice(2).join(" ")}

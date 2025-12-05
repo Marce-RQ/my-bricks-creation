@@ -113,6 +113,20 @@ export default async function BuildPage({ params }: BuildPageProps) {
 				</nav>
 
 				<div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
+					{/* Title - Shows on mobile above image */}
+					<div className="lg:hidden animate-in">
+						<div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+							<span className="w-2 h-2 bg-green-500 rounded-full" />
+							{t("published")}{" "}
+							{post.published_at
+								? formatDate(post.published_at)
+								: formatDate(post.created_at)}
+						</div>
+						<h1 className="text-4xl sm:text-5xl font-heading font-extrabold text-lego-dark leading-tight tracking-tight">
+							{post.title}
+						</h1>
+					</div>
+
 					{/* Image Section */}
 					<div
 						className="animate-in"
@@ -128,11 +142,11 @@ export default async function BuildPage({ params }: BuildPageProps) {
 
 					{/* Content Section */}
 					<div
-						className="space-y-8 animate-in"
+						className="flex flex-col gap-8 animate-in"
 						style={{ animationDelay: "200ms" }}
 					>
-						{/* Title */}
-						<div>
+						{/* Title - Hidden on mobile, shown on desktop */}
+						<div className="hidden lg:block">
 							<div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
 								<span className="w-2 h-2 bg-green-500 rounded-full" />
 								{t("published")}{" "}
@@ -140,16 +154,35 @@ export default async function BuildPage({ params }: BuildPageProps) {
 									? formatDate(post.published_at)
 									: formatDate(post.created_at)}
 							</div>
-							<h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-lego-dark leading-tight">
+							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-lego-dark leading-tight tracking-tight">
 								{post.title}
 							</h1>
 						</div>
 
+						{/* Description - Shows first on mobile */}
+						{post.description && (
+							<div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100 order-first lg:order-none">
+								<div className="flex items-center gap-3 mb-4">
+									<div className="w-10 h-10 bg-lego-red/10 rounded-lg flex items-center justify-center">
+										<span className="text-xl">📖</span>
+									</div>
+									<h2 className="text-xl font-heading font-bold text-lego-dark">
+										{t("theStory")}
+									</h2>
+								</div>
+								<div className="prose prose-gray max-w-none">
+									<p className="text-gray-600 text-base leading-7 whitespace-pre-wrap">
+										{post.description}
+									</p>
+								</div>
+							</div>
+						)}
+
 						{/* Stats Cards */}
 						<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
 							{post.piece_count && (
-								<div className="bg-white rounded-xl p-4 shadow-soft border border-gray-100">
-									<div className="w-10 h-10 bg-lego-blue/10 rounded-lg flex items-center justify-center mb-3">
+								<div className="bg-lego-blue-50 rounded-xl p-4 shadow-soft border border-lego-blue-100 flex flex-col items-center text-center">
+									<div className="w-10 h-10 bg-lego-blue/15 rounded-lg flex items-center justify-center mb-3">
 										<svg
 											className="w-5 h-5 text-lego-blue"
 											fill="none"
@@ -173,8 +206,8 @@ export default async function BuildPage({ params }: BuildPageProps) {
 								</div>
 							)}
 							{post.date_start && (
-								<div className="bg-white rounded-xl p-4 shadow-soft border border-gray-100">
-									<div className="w-10 h-10 bg-lego-yellow/20 rounded-lg flex items-center justify-center mb-3">
+								<div className="bg-lego-yellow-50 rounded-xl p-4 shadow-soft border border-lego-yellow-200 flex flex-col items-center text-center">
+									<div className="w-10 h-10 bg-lego-yellow/30 rounded-lg flex items-center justify-center mb-3">
 										<svg
 											className="w-5 h-5 text-lego-yellow-600"
 											fill="none"
@@ -198,8 +231,8 @@ export default async function BuildPage({ params }: BuildPageProps) {
 								</div>
 							)}
 							{post.date_completed && (
-								<div className="bg-white rounded-xl p-4 shadow-soft border border-gray-100">
-									<div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+								<div className="bg-green-50 rounded-xl p-4 shadow-soft border border-green-200 flex flex-col items-center text-center">
+									<div className="w-10 h-10 bg-green-200 rounded-lg flex items-center justify-center mb-3">
 										<svg
 											className="w-5 h-5 text-green-600"
 											fill="none"
@@ -224,28 +257,9 @@ export default async function BuildPage({ params }: BuildPageProps) {
 							)}
 						</div>
 
-						{/* Description */}
-						{post.description && (
-							<div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100">
-								<div className="flex items-center gap-3 mb-4">
-									<div className="w-10 h-10 bg-lego-red/10 rounded-lg flex items-center justify-center">
-										<span className="text-xl">📖</span>
-									</div>
-									<h2 className="text-xl font-heading font-bold text-lego-dark">
-										{t("theStory")}
-									</h2>
-								</div>
-								<div className="prose prose-gray max-w-none">
-									<p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
-										{post.description}
-									</p>
-								</div>
-							</div>
-						)}
-
 						{/* Support CTA */}
 						<div
-							className="relative overflow-hidden bg-gradient-to-br from-lego-red to-red-600 
+							className="relative overflow-hidden bg-gradient-to-br from-amber-500 to-amber-600 
                           p-8 rounded-2xl text-white"
 						>
 							{/* Decorative elements */}
@@ -253,17 +267,17 @@ export default async function BuildPage({ params }: BuildPageProps) {
 							<div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
 
 							<div className="relative z-10">
-								<span className="text-4xl mb-4 block">🧱</span>
+								<span className="text-4xl mb-4 block">🐼</span>
 								<h3 className="text-xl font-heading font-bold mb-2">
 									{t("enjoyedCreation")}
 								</h3>
-								<p className="text-white/80 mb-6">
+								<p className="text-white/90 mb-6">
 									{t("supportMessage")}
 								</p>
 								<Link
 									href="/support"
-									className="inline-flex items-center gap-2 bg-white text-lego-red px-6 py-3 
-                           rounded-xl font-semibold hover:bg-gray-100 transition-colors"
+									className="inline-flex items-center gap-2 bg-white text-amber-600 px-6 py-3 
+                           rounded-xl font-semibold shadow-lg hover:bg-gray-50 hover:shadow-xl transition-all"
 								>
 									❤️ {t("supportMe")}
 									<svg

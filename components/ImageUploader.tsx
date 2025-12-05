@@ -6,9 +6,25 @@ import { useDropzone } from "react-dropzone";
 import { useTranslations } from "next-intl";
 import type { PostImage } from "@/lib/types";
 
-// Shared cover badge component
-const CoverBadge = ({ label }: { label: string }) => (
-	<div className="absolute top-2 left-2 bg-lego-red text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
+// Cover button component - shows on all images
+interface CoverButtonProps {
+	isCover: boolean;
+	onClick: () => void;
+	label: string;
+}
+
+const CoverButton = ({ isCover, onClick, label }: CoverButtonProps) => (
+	<button
+		type="button"
+		onClick={onClick}
+		disabled={isCover}
+		className={`absolute top-2 left-2 px-2 py-1 rounded text-xs font-medium flex items-center gap-1 transition-all
+			${
+				isCover
+					? "bg-lego-red text-white cursor-default"
+					: "bg-gray-500/70 text-white/80 hover:bg-lego-red hover:text-white cursor-pointer"
+			}`}
+	>
 		<svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
 			<path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
 			<path
@@ -18,7 +34,7 @@ const CoverBadge = ({ label }: { label: string }) => (
 			/>
 		</svg>
 		{label}
-	</div>
+	</button>
 );
 
 // Shared remove button component
@@ -41,6 +57,8 @@ interface ImageUploaderProps {
 	onRemoveExisting: (imageId: string) => void;
 	onRemoveNew: (index: number) => void;
 	maxImages: number;
+	coverIndex: number;
+	onSetCover: (index: number) => void;
 }
 
 export default function ImageUploader({
@@ -50,6 +68,8 @@ export default function ImageUploader({
 	onRemoveExisting,
 	onRemoveNew,
 	maxImages,
+	coverIndex,
+	onSetCover,
 }: ImageUploaderProps) {
 	const t = useTranslations("admin");
 	const totalImages = existingImages.length + newImages.length;
@@ -80,39 +100,46 @@ export default function ImageUploader({
 			{/* Image Grid */}
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				{/* Existing Images */}
-				{existingImages.map((image, index) => (
-					<div
-						key={image.id}
-						className={`relative aspect-square rounded-lg overflow-hidden bg-gray-800 group
-							${index === 0 ? "ring-2 ring-lego-red ring-offset-2" : ""}`}
-					>
-						<Image
-							src={image.image_url}
-							alt={image.alt_text || "Build image"}
-							fill
-							sizes="(max-width: 768px) 50vw, 25vw"
-							className="object-contain p-1"
-						/>
-						<RemoveButton
-							onClick={() => onRemoveExisting(image.id)}
-						/>
-						{index === 0 && <CoverBadge label={t("cover")} />}
-						<div className="absolute bottom-2 left-2 bg-black/60 text-white px-2 py-1 rounded text-xs">
-							#{index + 1}
+				{existingImages.map((image, index) => {
+					const isCover = index === coverIndex;
+					return (
+						<div
+							key={image.id}
+							className={`relative aspect-square rounded-lg overflow-hidden bg-gray-800 group
+								${isCover ? "ring-2 ring-lego-red ring-offset-2" : ""}`}
+						>
+							<Image
+								src={image.image_url}
+								alt={image.alt_text || "Build image"}
+								fill
+								sizes="(max-width: 768px) 50vw, 25vw"
+								className="object-contain p-1"
+							/>
+							<RemoveButton
+								onClick={() => onRemoveExisting(image.id)}
+							/>
+							<CoverButton
+								isCover={isCover}
+								onClick={() => onSetCover(index)}
+								label={t("cover")}
+							/>
+							<div className="absolute bottom-2 left-2 bg-black/60 text-white px-2 py-1 rounded text-xs">
+								#{index + 1}
+							</div>
 						</div>
-					</div>
-				))}
+					);
+				})}
 
 				{/* New Images Preview */}
 				{newImages.map((file, index) => {
-					const isFirstImage =
-						existingImages.length === 0 && index === 0;
-					const displayNumber = existingImages.length + index + 1;
+					const globalIndex = existingImages.length + index;
+					const isCover = globalIndex === coverIndex;
+					const displayNumber = globalIndex + 1;
 					return (
 						<div
 							key={`new-${index}`}
 							className={`relative aspect-square rounded-lg overflow-hidden bg-gray-800 group
-								${isFirstImage ? "ring-2 ring-lego-red ring-offset-2" : ""}`}
+								${isCover ? "ring-2 ring-lego-red ring-offset-2" : ""}`}
 						>
 							<Image
 								src={URL.createObjectURL(file)}
@@ -122,7 +149,11 @@ export default function ImageUploader({
 								className="object-contain p-1"
 							/>
 							<RemoveButton onClick={() => onRemoveNew(index)} />
-							{isFirstImage && <CoverBadge label={t("cover")} />}
+							<CoverButton
+								isCover={isCover}
+								onClick={() => onSetCover(globalIndex)}
+								label={t("cover")}
+							/>
 							<div className="absolute bottom-2 left-2 bg-lego-blue text-white px-2 py-1 rounded text-xs">
 								#{displayNumber} ({t("new")})
 							</div>

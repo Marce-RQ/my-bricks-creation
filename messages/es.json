@@ -46,7 +46,12 @@
 		"completed": "Completado",
 		"backToGallery": "Volver a la Galería",
 		"notFound": "Post No Encontrado",
-		"notFoundDescription": "El post que buscas no existe o ha sido eliminada."
+		"notFoundDescription": "El post que buscas no existe o ha sido eliminada.",
+		"published": "Publicado",
+		"theStory": "La Historia",
+		"enjoyedCreation": "¿Te gustó esta creación?",
+		"supportMessage": "¡Tu apoyo me ayuda a conseguir más piezas y crear construcciones aún más increíbles!",
+		"supportMe": "Apóyame"
 	},
 	"admin": {
 		"dashboard": "Panel",

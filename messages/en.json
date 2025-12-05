@@ -46,7 +46,12 @@
 		"completed": "Completed",
 		"backToGallery": "Back to Gallery",
 		"notFound": "Build Not Found",
-		"notFoundDescription": "The build you're looking for doesn't exist or has been removed."
+		"notFoundDescription": "The build you're looking for doesn't exist or has been removed.",
+		"published": "Published",
+		"theStory": "The Story",
+		"enjoyedCreation": "Enjoyed this creation?",
+		"supportMessage": "Your support helps me get more bricks and create even more amazing builds!",
+		"supportMe": "Support Me"
 	},
 	"admin": {
 		"dashboard": "Dashboard",

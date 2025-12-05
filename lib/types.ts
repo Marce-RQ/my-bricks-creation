@@ -24,3 +24,7 @@ export interface PostImage {
 export interface PostWithImages extends Post {
 	images: PostImage[];
 }
+
+export interface PostWithCover extends Post {
+	cover_image?: string;
+}

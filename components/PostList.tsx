@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
-import type { Post } from "@/lib/types";
+import type { PostWithCover } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
 interface PostListProps {
-	posts: Post[];
+	posts: PostWithCover[];
 }
 
 export default function PostList({ posts: initialPosts }: PostListProps) {
-	const [posts, setPosts] = useState(initialPosts);
+	const [posts, setPosts] = useState<PostWithCover[]>(initialPosts);
 	const [filter, setFilter] = useState<"all" | "draft" | "published">("all");
 	const [deleting, setDeleting] = useState<string | null>(null);
 	const router = useRouter();
@@ -49,7 +50,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 		}
 	};
 
-	const toggleStatus = async (post: Post) => {
+	const toggleStatus = async (post: PostWithCover) => {
 		const newStatus = post.status === "published" ? "draft" : "published";
 		const supabase = createClient();
 
@@ -159,13 +160,33 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 							{filteredPosts.map((post) => (
 								<tr key={post.id} className="hover:bg-gray-50">
 									<td className="px-6 py-4">
-										<div>
-											<p className="font-medium text-lego-dark">
-												{post.title}
-											</p>
-											<p className="text-sm text-gray-500">
-												/{post.slug}
-											</p>
+										<div className="flex items-center gap-3">
+											{/* Cover Thumbnail */}
+											<div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+												{post.cover_image ? (
+													<Image
+														src={post.cover_image}
+														alt={post.title}
+														fill
+														sizes="48px"
+														className="object-cover"
+													/>
+												) : (
+													<div className="w-full h-full flex items-center justify-center text-gray-400">
+														<span className="text-lg">
+															🧱
+														</span>
+													</div>
+												)}
+											</div>
+											<div>
+												<p className="font-medium text-lego-dark">
+													{post.title}
+												</p>
+												<p className="text-sm text-gray-500">
+													/{post.slug}
+												</p>
+											</div>
 										</div>
 									</td>
 									<td className="px-6 py-4">

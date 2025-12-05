@@ -135,7 +135,7 @@ export default async function BuildPage({ params }: BuildPageProps) {
 						<div>
 							<div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
 								<span className="w-2 h-2 bg-green-500 rounded-full" />
-								Published{" "}
+								{t("published")}{" "}
 								{post.published_at
 									? formatDate(post.published_at)
 									: formatDate(post.created_at)}
@@ -232,7 +232,7 @@ export default async function BuildPage({ params }: BuildPageProps) {
 										<span className="text-xl">📖</span>
 									</div>
 									<h2 className="text-xl font-heading font-bold text-lego-dark">
-										The Story
+										{t("theStory")}
 									</h2>
 								</div>
 								<div className="prose prose-gray max-w-none">
@@ -255,18 +255,17 @@ export default async function BuildPage({ params }: BuildPageProps) {
 							<div className="relative z-10">
 								<span className="text-4xl mb-4 block">🧱</span>
 								<h3 className="text-xl font-heading font-bold mb-2">
-									Enjoyed this creation?
+									{t("enjoyedCreation")}
 								</h3>
 								<p className="text-white/80 mb-6">
-									Your support helps me get more bricks and
-									create even more amazing builds!
+									{t("supportMessage")}
 								</p>
 								<Link
 									href="/support"
 									className="inline-flex items-center gap-2 bg-white text-lego-red px-6 py-3 
                            rounded-xl font-semibold hover:bg-gray-100 transition-colors"
 								>
-									❤️ Support Me
+									❤️ {t("supportMe")}
 									<svg
 										className="w-4 h-4"
 										fill="none"

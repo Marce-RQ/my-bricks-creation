@@ -3,6 +3,15 @@
 		"logout": "Logout",
 		"cancel": "Cancel"
 	},
+	"header": {
+		"gallery": "Gallery"
+	},
+	"footer": {
+		"tagline": "A young Master Builder's journey in creating amazing Lego masterpieces.",
+		"gallery": "Gallery",
+		"support": "Support",
+		"madeWith": "Made with ❤️ and lots of bricks"
+	},
 	"hero": {
 		"badge": "Master Builder",
 		"greeting": "Hi, I'm a",

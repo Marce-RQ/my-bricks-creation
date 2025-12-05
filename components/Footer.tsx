@@ -1,6 +1,8 @@
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+	const t = useTranslations("footer");
 	const currentYear = new Date().getFullYear();
 
 	return (
@@ -29,8 +31,7 @@ export default function Footer() {
 							</div>
 						</Link>
 						<p className="mt-3 text-gray-400 text-sm max-w-xs mx-auto md:mx-0">
-							A young Master Builder&apos;s journey in creating
-							amazing Lego masterpieces.
+							{t("tagline")}
 						</p>
 					</div>
 
@@ -40,13 +41,13 @@ export default function Footer() {
 							href="/"
 							className="text-gray-300 hover:text-lego-yellow transition-colors font-medium"
 						>
-							Gallery
+							{t("gallery")}
 						</Link>
 						<Link
 							href="/support"
 							className="text-gray-300 hover:text-lego-yellow transition-colors font-medium"
 						>
-							Support
+							{t("support")}
 						</Link>
 					</nav>
 
@@ -56,7 +57,7 @@ export default function Footer() {
 							© {currentYear} MyBricksCreations
 						</p>
 						<p className="text-gray-500 text-xs mt-1">
-							Made with ❤️ and lots of bricks
+							{t("madeWith")}
 						</p>
 					</div>
 				</div>

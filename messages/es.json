@@ -3,6 +3,15 @@
 		"logout": "Cerrar Sesión",
 		"cancel": "Cancelar"
 	},
+	"header": {
+		"gallery": "Galería"
+	},
+	"footer": {
+		"tagline": "El viaje de un joven Master Builder creando increíbles obras maestras de Lego.",
+		"gallery": "Galería",
+		"support": "Apoyar",
+		"madeWith": "Hecho con ❤️ y muchas piezas"
+	},
 	"hero": {
 		"badge": "Master Builder",
 		"greeting": "Hola, soy un",
@@ -61,7 +70,7 @@
 		"noPostsYet": "Aún no hay publicaciones",
 		"createFirst": "¡Crea tu primer post!",
 		"adminPanel": "Panel de Admin",
-		"backToUserSite": "Volver a Usuario",
+		"backToUserSite": "Volver a Sitio de Usuario",
 		"logoutSuccess": "Sesión cerrada exitosamente",
 		"welcomeBack": "¡Bienvenido de Nuevo!",
 		"overviewDescription": "Aquí tienes un resumen de tus creaciones de Lego",

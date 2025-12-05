@@ -1,8 +1,10 @@
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function Header() {
+	const t = useTranslations("header");
 	return (
 		<header className="glass sticky top-0 z-50 border-b border-gray-100">
 			<nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +41,7 @@ export default function Header() {
 							className="relative px-4 py-2 text-gray-600 hover:text-lego-dark 
                          font-medium transition-all duration-300 border-b-2 border-transparent hover:border-lego-red"
 						>
-							Gallery
+							{t("gallery")}
 						</Link>
 						<LanguageSwitcher />
 					</div>

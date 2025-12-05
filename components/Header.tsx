@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Image from "next/image";
 
 export default function Header() {
 	return (
@@ -9,9 +10,13 @@ export default function Header() {
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-3 group">
 						<div className="relative">
-							<span className="text-3xl group-hover:animate-float inline-block transition-transform">
-								🧱
-							</span>
+							<Image
+								src="/header-brand-image.png"
+								alt="Header Brand Image"
+								width={61}
+								height={61}
+								className="group-hover:animate-float inline-block transition-transform"
+							/>
 							<div
 								className="absolute -bottom-1 -right-1 w-3 h-3 bg-lego-yellow rounded-full 
                             opacity-0 group-hover:opacity-100 transition-opacity"
@@ -32,19 +37,9 @@ export default function Header() {
 						<Link
 							href="/"
 							className="relative px-4 py-2 text-gray-600 hover:text-lego-dark 
-                         font-medium transition-colors group"
+                         font-medium transition-all duration-300 border-b-2 border-transparent hover:border-lego-red"
 						>
 							Gallery
-							<span
-								className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 
-                             bg-lego-red group-hover:w-full transition-all duration-300"
-							/>
-						</Link>
-						<Link
-							href="/support"
-							className="btn-primary text-sm py-2.5 px-5 shadow-none hover:shadow-button"
-						>
-							<span className="hidden sm:inline">❤️</span> Support
 						</Link>
 						<LanguageSwitcher />
 					</div>

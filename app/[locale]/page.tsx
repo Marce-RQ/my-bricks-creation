@@ -53,9 +53,6 @@ export default async function HomePage({
 		<div className="overflow-hidden">
 			{/* HERO SECTION - Split Layout */}
 			<section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-lego-bg via-white to-lego-yellow-50">
-				{/* Decorative color bar on left */}
-				<div className="hidden lg:block absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-lego-red via-lego-yellow to-lego-blue" />
-
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 						{/* Left Side - Avatar */}
@@ -181,8 +178,23 @@ export default async function HomePage({
 										/>
 									</svg>
 								</Link>
-								<Link href="/support" className="btn-outline">
-									❤️ {t("hero.supportCreations")}
+								<Link
+									href="/support"
+									className="btn-outline group"
+								>
+									<span className="w-[26px] h-[26px] inline-flex items-center justify-center">
+										<span className="group-hover:hidden text-lg">
+											❤️
+										</span>
+										<Image
+											src="/smiley-lego.png"
+											alt="Smiley Lego"
+											width={26}
+											height={26}
+											className="hidden group-hover:inline-block"
+										/>
+									</span>
+									{t("hero.supportCreations")}
 								</Link>
 							</div>
 

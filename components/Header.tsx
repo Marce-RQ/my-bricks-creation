@@ -1,10 +1,8 @@
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 
 export default function Header() {
-	const t = useTranslations("header");
 	return (
 		<header className="glass sticky top-0 z-50 border-b border-gray-100">
 			<nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

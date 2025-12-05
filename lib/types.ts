@@ -24,29 +24,3 @@ export interface PostImage {
 export interface PostWithImages extends Post {
 	images: PostImage[];
 }
-
-export interface CreatePostInput {
-	title: string;
-	description?: string;
-	slug: string;
-	piece_count?: number;
-	status: "draft" | "published";
-	date_start?: string;
-	date_completed?: string;
-}
-
-export interface UpdatePostInput extends Partial<CreatePostInput> {
-	id: string;
-}
-
-export interface UploadedImage {
-	file: File;
-	preview: string;
-	alt_text?: string;
-}
-
-export interface StorageStats {
-	totalBytes: number;
-	usedBytes: number;
-	percentage: number;
-}

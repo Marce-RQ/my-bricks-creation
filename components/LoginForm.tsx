@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
 export default function LoginForm() {
@@ -10,6 +11,7 @@ export default function LoginForm() {
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 	const router = useRouter();
+	const t = useTranslations("login");
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -27,7 +29,7 @@ export default function LoginForm() {
 				return;
 			}
 
-			toast.success("Welcome back!");
+			toast.success(t("welcomeBack"));
 			router.push("/admin");
 			router.refresh();
 		} catch {
@@ -41,7 +43,7 @@ export default function LoginForm() {
 		<form onSubmit={handleSubmit} className="space-y-6">
 			<div>
 				<label htmlFor="email" className="label">
-					Email Address
+					{t("email")}
 				</label>
 				<input
 					id="email"
@@ -57,7 +59,7 @@ export default function LoginForm() {
 
 			<div>
 				<label htmlFor="password" className="label">
-					Password
+					{t("password")}
 				</label>
 				<input
 					id="password"
@@ -98,10 +100,10 @@ export default function LoginForm() {
 								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 							></path>
 						</svg>
-						Signing in...
+						{t("signingIn")}
 					</>
 				) : (
-					"Sign In"
+					t("signIn")
 				)}
 			</button>
 		</form>

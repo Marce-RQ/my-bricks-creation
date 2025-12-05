@@ -3,10 +3,11 @@
 import { useCallback } from "react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
+import { useTranslations } from "next-intl";
 import type { PostImage } from "@/lib/types";
 
 // Shared cover badge component
-const CoverBadge = () => (
+const CoverBadge = ({ label }: { label: string }) => (
 	<div className="absolute top-2 left-2 bg-lego-red text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
 		<svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
 			<path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -16,7 +17,7 @@ const CoverBadge = () => (
 				clipRule="evenodd"
 			/>
 		</svg>
-		Cover
+		{label}
 	</div>
 );
 
@@ -50,6 +51,7 @@ export default function ImageUploader({
 	onRemoveNew,
 	maxImages,
 }: ImageUploaderProps) {
+	const t = useTranslations("admin");
 	const totalImages = existingImages.length + newImages.length;
 	const canAddMore = totalImages < maxImages;
 
@@ -94,7 +96,7 @@ export default function ImageUploader({
 						<RemoveButton
 							onClick={() => onRemoveExisting(image.id)}
 						/>
-						{index === 0 && <CoverBadge />}
+						{index === 0 && <CoverBadge label={t("cover")} />}
 						<div className="absolute bottom-2 left-2 bg-black/60 text-white px-2 py-1 rounded text-xs">
 							#{index + 1}
 						</div>
@@ -120,9 +122,9 @@ export default function ImageUploader({
 								className="object-contain p-1"
 							/>
 							<RemoveButton onClick={() => onRemoveNew(index)} />
-							{isFirstImage && <CoverBadge />}
+							{isFirstImage && <CoverBadge label={t("cover")} />}
 							<div className="absolute bottom-2 left-2 bg-lego-blue text-white px-2 py-1 rounded text-xs">
-								#{displayNumber} (New)
+								#{displayNumber} ({t("new")})
 							</div>
 						</div>
 					);
@@ -144,16 +146,16 @@ export default function ImageUploader({
 					<div className="text-4xl mb-2">📸</div>
 					{isDragActive ? (
 						<p className="text-lego-blue font-medium">
-							Drop images here...
+							{t("dropImagesHere")}
 						</p>
 					) : (
 						<>
 							<p className="text-gray-600 font-medium">
-								Drag & drop images here, or click to select
+								{t("dragDropImages")}
 							</p>
 							<p className="text-sm text-gray-500 mt-2">
-								JPEG, PNG, or WebP • Max 5MB each •{" "}
-								{maxImages - totalImages} more allowed
+								{t("imageFormats")} • {maxImages - totalImages}{" "}
+								{t("moreAllowed")}
 							</p>
 						</>
 					)}
@@ -162,7 +164,7 @@ export default function ImageUploader({
 
 			{!canAddMore && (
 				<p className="text-sm text-gray-500 text-center">
-					Maximum of {maxImages} images reached
+					{t("maxImagesReached", { count: maxImages })}
 				</p>
 			)}
 		</div>

@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import PostForm from "@/components/PostForm";
 import type { PostWithImages } from "@/lib/types";
 
@@ -36,6 +36,7 @@ async function getPost(id: string): Promise<PostWithImages | null> {
 export default async function EditPostPage({ params }: EditPostPageProps) {
 	const { locale, id } = await params;
 	setRequestLocale(locale);
+	const t = await getTranslations("admin");
 
 	const supabase = await createClient();
 	const {
@@ -55,7 +56,7 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
 	return (
 		<div className="max-w-4xl mx-auto">
 			<h1 className="text-3xl font-heading font-bold text-lego-dark mb-8">
-				Edit Build
+				{t("editBuildTitle")}
 			</h1>
 			<PostForm post={post} />
 		</div>

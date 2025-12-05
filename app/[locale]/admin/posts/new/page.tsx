@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import PostForm from "@/components/PostForm";
 
 export default async function NewPostPage({
@@ -10,6 +10,7 @@ export default async function NewPostPage({
 }) {
 	const { locale } = await params;
 	setRequestLocale(locale);
+	const t = await getTranslations("admin");
 
 	const supabase = await createClient();
 	const {
@@ -23,7 +24,7 @@ export default async function NewPostPage({
 	return (
 		<div className="max-w-4xl mx-auto">
 			<h1 className="text-3xl font-heading font-bold text-lego-dark mb-8">
-				Create New Build
+				{t("createNewBuildTitle")}
 			</h1>
 			<PostForm />
 		</div>

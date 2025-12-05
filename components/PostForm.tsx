@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { generateSlug, validateImageFile } from "@/lib/utils";
 import type { PostWithImages, PostImage } from "@/lib/types";
@@ -14,6 +15,8 @@ interface PostFormProps {
 
 export default function PostForm({ post }: PostFormProps) {
 	const router = useRouter();
+	const t = useTranslations("admin");
+	const tCommon = useTranslations("common");
 	const isEditing = !!post;
 	const isDraft = post?.status === "draft";
 	const isPublished = post?.status === "published";
@@ -95,12 +98,12 @@ export default function PostForm({ post }: PostFormProps) {
 
 	const handleSave = async (status: "draft" | "published") => {
 		if (!title.trim()) {
-			toast.error("Title is required");
+			toast.error(t("titleRequired"));
 			return;
 		}
 
 		if (title.length < 3 || title.length > 100) {
-			toast.error("Title must be between 3 and 100 characters");
+			toast.error(t("titleLength"));
 			return;
 		}
 
@@ -108,12 +111,12 @@ export default function PostForm({ post }: PostFormProps) {
 			pieceCount &&
 			(isNaN(Number(pieceCount)) || Number(pieceCount) < 0)
 		) {
-			toast.error("Piece count must be a positive number");
+			toast.error(t("pieceCountPositive"));
 			return;
 		}
 
 		if (dateStart && dateCompleted && dateStart > dateCompleted) {
-			toast.error("Start date must be before completion date");
+			toast.error(t("dateValidation"));
 			return;
 		}
 
@@ -245,19 +248,21 @@ export default function PostForm({ post }: PostFormProps) {
 				// Show appropriate message based on upload results
 				if (failCount > 0 && successCount > 0) {
 					toast.error(
-						`${failCount} image(s) failed to upload. ${successCount} uploaded successfully.`
+						`${failCount} ${t("uploadFailed")}. ${successCount} ${t(
+							"uploadSuccess"
+						)}.`
 					);
 				} else if (failCount > 0 && successCount === 0) {
-					toast.error(`All ${failCount} image(s) failed to upload.`);
+					toast.error(`${t("allUploadsFailed")}`);
 				}
 			}
 
 			toast.success(
 				isEditing
-					? "Post updated successfully!"
+					? t("postUpdated")
 					: status === "published"
-					? "Post published!"
-					: "Draft saved!"
+					? t("postPublished")
+					: t("draftSaved")
 			);
 
 			router.push("/admin/posts");
@@ -265,7 +270,7 @@ export default function PostForm({ post }: PostFormProps) {
 		} catch (error: unknown) {
 			console.error("Save error:", error);
 			const errorMessage =
-				error instanceof Error ? error.message : "Failed to save post";
+				error instanceof Error ? error.message : t("saveFailed");
 			toast.error(errorMessage);
 		} finally {
 			setSaving(false);
@@ -284,7 +289,7 @@ export default function PostForm({ post }: PostFormProps) {
 			existingImages.length + newImages.length + files.length;
 
 		if (totalImages > 4) {
-			toast.error("Maximum 4 images allowed per build");
+			toast.error(t("maxImagesError"));
 			return;
 		}
 
@@ -313,7 +318,7 @@ export default function PostForm({ post }: PostFormProps) {
 			{/* Title */}
 			<div className="bg-white rounded-card shadow-card p-6">
 				<label htmlFor="title" className="label">
-					Title *
+					{t("title")} *
 				</label>
 				<input
 					id="title"
@@ -321,7 +326,7 @@ export default function PostForm({ post }: PostFormProps) {
 					value={title}
 					onChange={(e) => handleTitleChange(e.target.value)}
 					className="input-field"
-					placeholder="My Amazing Lego Build"
+					placeholder={t("titlePlaceholder")}
 					minLength={3}
 					maxLength={100}
 					required
@@ -329,7 +334,7 @@ export default function PostForm({ post }: PostFormProps) {
 
 				<div className="mt-4">
 					<label htmlFor="slug" className="label">
-						URL Slug
+						{t("urlSlug")}
 					</label>
 					<div className="flex items-center gap-2">
 						<span className="text-gray-500">/builds/</span>
@@ -348,26 +353,26 @@ export default function PostForm({ post }: PostFormProps) {
 			{/* Description */}
 			<div className="bg-white rounded-card shadow-card p-6">
 				<label htmlFor="description" className="label">
-					Story / Description
+					{t("storyDescription")}
 				</label>
 				<textarea
 					id="description"
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 					className="input-field min-h-[200px]"
-					placeholder="Tell the story behind this build..."
+					placeholder={t("storyPlaceholder")}
 				/>
 			</div>
 
 			{/* Details */}
 			<div className="bg-white rounded-card shadow-card p-6">
 				<h3 className="font-heading font-bold text-lego-dark mb-4">
-					Build Details
+					{t("buildDetails")}
 				</h3>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 					<div>
 						<label htmlFor="pieceCount" className="label">
-							Piece Count
+							{t("pieceCount")}
 						</label>
 						<input
 							id="pieceCount"
@@ -381,7 +386,7 @@ export default function PostForm({ post }: PostFormProps) {
 					</div>
 					<div>
 						<label htmlFor="dateStart" className="label">
-							Start Date
+							{t("startDate")}
 						</label>
 						<input
 							id="dateStart"
@@ -393,7 +398,7 @@ export default function PostForm({ post }: PostFormProps) {
 					</div>
 					<div>
 						<label htmlFor="dateCompleted" className="label">
-							Completion Date
+							{t("completionDate")}
 						</label>
 						<input
 							id="dateCompleted"
@@ -409,7 +414,7 @@ export default function PostForm({ post }: PostFormProps) {
 			{/* Images */}
 			<div className="bg-white rounded-card shadow-card p-6">
 				<h3 className="font-heading font-bold text-lego-dark mb-4">
-					Images (Max 4)
+					{t("imagesMax")}
 				</h3>
 
 				<ImageUploader
@@ -429,7 +434,7 @@ export default function PostForm({ post }: PostFormProps) {
 					onClick={() => router.back()}
 					className="px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors"
 				>
-					Cancel
+					{tCommon("cancel")}
 				</button>
 				{/* Show Save Draft for new posts and existing drafts */}
 				{(!isEditing || isDraft) && (
@@ -442,8 +447,8 @@ export default function PostForm({ post }: PostFormProps) {
 						}`}
 					>
 						{saving && savingAs === "draft"
-							? "Saving..."
-							: "Save Draft"}
+							? t("saving")
+							: t("saveDraft")}
 					</button>
 				)}
 				<button
@@ -460,11 +465,11 @@ export default function PostForm({ post }: PostFormProps) {
 				>
 					{saving && savingAs === "published"
 						? isPublished
-							? "Saving..."
-							: "Publishing..."
+							? t("saving")
+							: t("publishing")
 						: isPublished
-						? "Confirm Changes"
-						: "Publish"}
+						? t("confirmChanges")
+						: t("publish")}
 				</button>
 			</div>
 		</form>

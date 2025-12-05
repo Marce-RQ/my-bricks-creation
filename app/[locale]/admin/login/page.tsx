@@ -1,6 +1,6 @@
 import LoginForm from "@/components/LoginForm";
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
 	title: "Admin Login | MyBricksCreations",
@@ -13,6 +13,8 @@ export default async function LoginPage({
 }) {
 	const { locale } = await params;
 	setRequestLocale(locale);
+	const t = await getTranslations("login");
+	const tAdmin = await getTranslations("admin");
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-lego-bg py-12 px-4">
@@ -20,10 +22,10 @@ export default async function LoginPage({
 				<div className="text-center mb-8">
 					<span className="text-6xl">🧱</span>
 					<h1 className="text-3xl font-heading font-bold text-lego-dark mt-4">
-						Admin Login
+						{t("title")}
 					</h1>
 					<p className="text-gray-600 mt-2">
-						Sign in to manage your Lego creations
+						{tAdmin("signInToManage")}
 					</p>
 				</div>
 

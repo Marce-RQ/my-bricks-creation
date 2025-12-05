@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import PostList from "@/components/PostList";
 import type { Post } from "@/lib/types";
 
@@ -28,6 +28,7 @@ export default async function PostsPage({
 }) {
 	const { locale } = await params;
 	setRequestLocale(locale);
+	const t = await getTranslations("admin");
 
 	const supabase = await createClient();
 	const {
@@ -44,10 +45,10 @@ export default async function PostsPage({
 		<div className="space-y-6">
 			<div className="flex justify-between items-center">
 				<h1 className="text-3xl font-heading font-bold text-lego-dark">
-					Manage Posts
+					{t("managePostsTitle")}
 				</h1>
 				<Link href="/admin/posts/new" className="btn-primary">
-					+ New Build
+					+ {t("newBuild")}
 				</Link>
 			</div>
 

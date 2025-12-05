@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 
 async function getStats() {
 	const supabase = await createClient();
@@ -34,6 +34,7 @@ export default async function AdminDashboard({
 }) {
 	const { locale } = await params;
 	setRequestLocale(locale);
+	const t = await getTranslations("admin");
 
 	const supabase = await createClient();
 	const {
@@ -48,21 +49,21 @@ export default async function AdminDashboard({
 
 	const statCards = [
 		{
-			label: "Total Builds",
+			label: t("totalBuilds"),
 			value: stats.totalPosts,
-			icon: "🧱",
+			icon: "🚀",
 			color: "from-lego-blue to-blue-600",
 			bgLight: "bg-blue-50",
 		},
 		{
-			label: "Published",
+			label: t("published"),
 			value: stats.publishedPosts,
 			icon: "✅",
 			color: "from-green-500 to-emerald-600",
 			bgLight: "bg-green-50",
 		},
 		{
-			label: "Drafts",
+			label: t("drafts"),
 			value: stats.draftPosts,
 			icon: "📝",
 			color: "from-amber-400 to-orange-500",
@@ -76,10 +77,10 @@ export default async function AdminDashboard({
 			<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 				<div>
 					<h1 className="text-3xl font-heading font-bold text-lego-dark">
-						Welcome Back! 👋
+						{t("welcomeBack")} 👋
 					</h1>
 					<p className="text-gray-500 mt-1">
-						Here&apos;s an overview of your Lego creations
+						{t("overviewDescription")}
 					</p>
 				</div>
 				<Link href="/admin/posts/new" className="btn-primary">
@@ -96,7 +97,7 @@ export default async function AdminDashboard({
 							d="M12 4v16m8-8H4"
 						/>
 					</svg>
-					New Build
+					{t("newBuild")}
 				</Link>
 			</div>
 
@@ -134,7 +135,7 @@ export default async function AdminDashboard({
 			<div className="bg-white rounded-2xl p-6 shadow-soft border border-gray-100">
 				<h2 className="text-xl font-heading font-bold text-lego-dark mb-6 flex items-center gap-2">
 					<span className="text-2xl">⚡</span>
-					Quick Actions
+					{t("quickActions")}
 				</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 					<Link
@@ -150,10 +151,10 @@ export default async function AdminDashboard({
 						</div>
 						<div>
 							<p className="font-semibold text-lego-dark group-hover:text-white transition-colors">
-								Create New Build
+								{t("createNewBuild")}
 							</p>
 							<p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors">
-								Add a new creation
+								{t("addNewCreation")}
 							</p>
 						</div>
 					</Link>
@@ -171,10 +172,10 @@ export default async function AdminDashboard({
 						</div>
 						<div>
 							<p className="font-semibold text-lego-dark group-hover:text-white transition-colors">
-								Manage Posts
+								{t("managePosts")}
 							</p>
 							<p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors">
-								Edit or delete builds
+								{t("editOrDelete")}
 							</p>
 						</div>
 					</Link>
@@ -192,10 +193,10 @@ export default async function AdminDashboard({
 						</div>
 						<div>
 							<p className="font-semibold text-lego-dark group-hover:text-white transition-colors">
-								View Site
+								{t("viewSite")}
 							</p>
 							<p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors">
-								Open public gallery
+								{t("openPublicGallery")}
 							</p>
 						</div>
 					</Link>
@@ -207,7 +208,7 @@ export default async function AdminDashboard({
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="text-xl font-heading font-bold text-lego-dark flex items-center gap-2">
 						<span className="text-2xl">💾</span>
-						Storage Usage
+						{t("storageUsage")}
 					</h2>
 					<span className="text-sm text-gray-500">0 MB / 1 GB</span>
 				</div>
@@ -231,7 +232,7 @@ export default async function AdminDashboard({
 							d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 						/>
 					</svg>
-					Supabase free tier provides 1GB of storage for images
+					{t("storageInfo")}
 				</p>
 			</div>
 		</div>

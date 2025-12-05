@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
@@ -17,6 +18,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 	const [filter, setFilter] = useState<"all" | "draft" | "published">("all");
 	const [deleting, setDeleting] = useState<string | null>(null);
 	const router = useRouter();
+	const t = useTranslations("admin");
 
 	const filteredPosts = posts.filter((post) => {
 		if (filter === "all") return true;
@@ -24,7 +26,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 	});
 
 	const handleDelete = async (postId: string) => {
-		if (!confirm("Are you sure you want to delete this post?")) return;
+		if (!confirm(t("deleteConfirm"))) return;
 
 		setDeleting(postId);
 		const supabase = createClient();
@@ -38,10 +40,10 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 			if (error) throw error;
 
 			setPosts(posts.filter((p) => p.id !== postId));
-			toast.success("Post deleted successfully");
+			toast.success(t("postDeleted"));
 			router.refresh();
 		} catch {
-			toast.error("Failed to delete post");
+			toast.error(t("deleteError"));
 		} finally {
 			setDeleting(null);
 		}
@@ -72,12 +74,23 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 			);
 			toast.success(
 				newStatus === "published"
-					? "Post published!"
-					: "Post unpublished"
+					? t("postPublished")
+					: t("postUnpublished")
 			);
 			router.refresh();
 		} catch {
-			toast.error("Failed to update post status");
+			toast.error(t("statusUpdateError"));
+		}
+	};
+
+	const getFilterLabel = (filterOption: "all" | "draft" | "published") => {
+		switch (filterOption) {
+			case "all":
+				return t("all");
+			case "published":
+				return t("published");
+			case "draft":
+				return t("draft");
 		}
 	};
 
@@ -96,8 +109,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 									: "bg-white text-gray-600 hover:bg-gray-100"
 							}`}
 						>
-							{filterOption.charAt(0).toUpperCase() +
-								filterOption.slice(1)}
+							{getFilterLabel(filterOption)}
 							{filterOption !== "all" && (
 								<span className="ml-2 bg-white/20 px-2 py-0.5 rounded">
 									{
@@ -117,12 +129,12 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 				{filteredPosts.length === 0 ? (
 					<div className="p-12 text-center">
 						<span className="text-6xl mb-4 block">📭</span>
-						<p className="text-gray-500">No posts found</p>
+						<p className="text-gray-500">{t("noPostsFound")}</p>
 						<Link
 							href="/admin/posts/new"
 							className="text-lego-blue hover:underline mt-2 inline-block"
 						>
-							Create your first post
+							{t("createFirstPost")}
 						</Link>
 					</div>
 				) : (
@@ -130,16 +142,16 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 						<thead className="bg-gray-50 border-b">
 							<tr>
 								<th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
-									Title
+									{t("title")}
 								</th>
 								<th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
-									Status
+									{t("status")}
 								</th>
 								<th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">
-									Created
+									{t("created")}
 								</th>
 								<th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">
-									Actions
+									{t("actions")}
 								</th>
 							</tr>
 						</thead>
@@ -166,8 +178,8 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 											}`}
 										>
 											{post.status === "published"
-												? "✓ Published"
-												: "Draft"}
+												? `✓ ${t("published")}`
+												: t("draft")}
 										</button>
 									</td>
 									<td className="px-6 py-4 text-sm text-gray-500">
@@ -179,14 +191,14 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 												href={`/builds/${post.slug}`}
 												target="_blank"
 												className="p-2 text-gray-400 hover:text-gray-600"
-												title="View"
+												title={t("view")}
 											>
 												👁️
 											</Link>
 											<Link
 												href={`/admin/posts/edit/${post.id}`}
 												className="p-2 text-gray-400 hover:text-lego-blue"
-												title="Edit"
+												title={t("edit")}
 											>
 												✏️
 											</Link>
@@ -196,7 +208,7 @@ export default function PostList({ posts: initialPosts }: PostListProps) {
 												}
 												disabled={deleting === post.id}
 												className="p-2 text-gray-400 hover:text-red-600 disabled:opacity-50"
-												title="Delete"
+												title={t("deleteAction")}
 											>
 												{deleting === post.id
 													? "⏳"

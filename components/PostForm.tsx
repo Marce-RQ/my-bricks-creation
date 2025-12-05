@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import toast from "react-hot-toast";
@@ -15,6 +15,8 @@ interface PostFormProps {
 export default function PostForm({ post }: PostFormProps) {
 	const router = useRouter();
 	const isEditing = !!post;
+	const isDraft = post?.status === "draft";
+	const isPublished = post?.status === "published";
 
 	const [title, setTitle] = useState(post?.title || "");
 	const [description, setDescription] = useState(post?.description || "");
@@ -38,9 +40,55 @@ export default function PostForm({ post }: PostFormProps) {
 		null
 	);
 
+	// Check if any changes have been made (for existing builds)
+	const hasChanges = useMemo(() => {
+		if (!isEditing) return true; // New builds always allow saving
+
+		const titleChanged = title !== (post?.title || "");
+		const descriptionChanged = description !== (post?.description || "");
+		const slugChanged = slug !== (post?.slug || "");
+		const pieceCountChanged =
+			pieceCount !== (post?.piece_count?.toString() || "");
+		const dateStartChanged =
+			dateStart !==
+			(post?.date_start ? post.date_start.split("T")[0] : "");
+		const dateCompletedChanged =
+			dateCompleted !==
+			(post?.date_completed ? post.date_completed.split("T")[0] : "");
+		const imagesChanged = newImages.length > 0 || imagesToDelete.length > 0;
+
+		return (
+			titleChanged ||
+			descriptionChanged ||
+			slugChanged ||
+			pieceCountChanged ||
+			dateStartChanged ||
+			dateCompletedChanged ||
+			imagesChanged
+		);
+	}, [
+		isEditing,
+		title,
+		description,
+		slug,
+		pieceCount,
+		dateStart,
+		dateCompleted,
+		newImages.length,
+		imagesToDelete.length,
+		post,
+	]);
+
+	// Check if form is valid for saving (new posts need at least a title)
+	const canSave = useMemo(() => {
+		const hasValidTitle = title.trim().length >= 3;
+		return hasValidTitle;
+	}, [title]);
+
 	const handleTitleChange = (value: string) => {
 		setTitle(value);
-		if (!isEditing || !post?.slug) {
+		// Auto-update slug for new posts and drafts
+		if (!isEditing || isDraft) {
 			setSlug(generateSlug(value));
 		}
 	};
@@ -373,24 +421,39 @@ export default function PostForm({ post }: PostFormProps) {
 				>
 					Cancel
 				</button>
-				<button
-					type="button"
-					onClick={() => handleSave("draft")}
-					disabled={saving}
-					className="btn-outline disabled:opacity-50"
-				>
-					{saving && savingAs === "draft"
-						? "Saving..."
-						: "Save Draft"}
-				</button>
+				{/* Show Save Draft for new posts and existing drafts */}
+				{(!isEditing || isDraft) && (
+					<button
+						type="button"
+						onClick={() => handleSave("draft")}
+						disabled={saving || !canSave}
+						className={`btn-outline disabled:opacity-50 ${
+							!canSave ? "cursor-not-allowed" : ""
+						}`}
+					>
+						{saving && savingAs === "draft"
+							? "Saving..."
+							: "Save Draft"}
+					</button>
+				)}
 				<button
 					type="button"
 					onClick={() => handleSave("published")}
-					disabled={saving}
-					className="btn-primary disabled:opacity-50"
+					disabled={
+						saving || (isPublished && !hasChanges) || !canSave
+					}
+					className={`btn-primary disabled:opacity-50 ${
+						(isPublished && !hasChanges) || !canSave
+							? "cursor-not-allowed"
+							: ""
+					}`}
 				>
 					{saving && savingAs === "published"
-						? "Publishing..."
+						? isPublished
+							? "Saving..."
+							: "Publishing..."
+						: isPublished
+						? "Confirm Changes"
 						: "Publish"}
 				</button>
 			</div>

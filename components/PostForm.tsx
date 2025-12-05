@@ -38,6 +38,7 @@ export default function PostForm({ post }: PostFormProps) {
 	);
 	const [newImages, setNewImages] = useState<File[]>([]);
 	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+	const [coverIndex, setCoverIndex] = useState(0);
 	const [saving, setSaving] = useState(false);
 	const [savingAs, setSavingAs] = useState<"draft" | "published" | null>(
 		null
@@ -59,6 +60,7 @@ export default function PostForm({ post }: PostFormProps) {
 			dateCompleted !==
 			(post?.date_completed ? post.date_completed.split("T")[0] : "");
 		const imagesChanged = newImages.length > 0 || imagesToDelete.length > 0;
+		const coverChanged = coverIndex !== 0;
 
 		return (
 			titleChanged ||
@@ -67,7 +69,8 @@ export default function PostForm({ post }: PostFormProps) {
 			pieceCountChanged ||
 			dateStartChanged ||
 			dateCompletedChanged ||
-			imagesChanged
+			imagesChanged ||
+			coverChanged
 		);
 	}, [
 		isEditing,
@@ -78,6 +81,7 @@ export default function PostForm({ post }: PostFormProps) {
 		dateStart,
 		dateCompleted,
 		newImages.length,
+		coverIndex,
 		imagesToDelete.length,
 		post,
 	]);
@@ -184,28 +188,87 @@ export default function PostForm({ post }: PostFormProps) {
 				}
 			}
 
-			// Renumber existing images to have consecutive display_order starting from 0
-			if (existingImages.length > 0) {
+			// Reorder images based on cover selection
+			// coverIndex represents the index in the combined list of [existingImages, newImages]
+			const newImageCoverIndex = coverIndex - existingImages.length;
+			const isCoverInNewImages =
+				newImageCoverIndex >= 0 &&
+				newImageCoverIndex < newImages.length;
+			const isCoverInExistingImages = coverIndex < existingImages.length;
+
+			// Reorder new images if cover is in new images
+			const reorderedNewImages = [...newImages];
+			if (isCoverInNewImages) {
+				const [coverFile] = reorderedNewImages.splice(
+					newImageCoverIndex,
+					1
+				);
+				reorderedNewImages.unshift(coverFile);
+			}
+
+			// Calculate display orders
+			// If cover is a new image, it gets display_order 0, existing images shift by 1
+			// If cover is an existing image, reorder existing images accordingly
+
+			if (isCoverInNewImages && existingImages.length > 0) {
+				// New image is cover, existing images need to shift
+				// Existing images will have display_order starting from 1
 				for (let i = 0; i < existingImages.length; i++) {
 					const image = existingImages[i];
-					if (image.display_order !== i) {
-						await supabase
-							.from("post_images")
-							.update({ display_order: i })
-							.eq("id", image.id);
-					}
+					await supabase
+						.from("post_images")
+						.update({ display_order: i + 1 })
+						.eq("id", image.id);
+				}
+			} else if (isCoverInExistingImages) {
+				// Existing image is cover, reorder existing images
+				const reorderedExistingImages = [...existingImages];
+				if (coverIndex !== 0) {
+					const [coverImage] = reorderedExistingImages.splice(
+						coverIndex,
+						1
+					);
+					reorderedExistingImages.unshift(coverImage);
+				}
+
+				for (let i = 0; i < reorderedExistingImages.length; i++) {
+					const image = reorderedExistingImages[i];
+					await supabase
+						.from("post_images")
+						.update({ display_order: i })
+						.eq("id", image.id);
+				}
+			} else if (existingImages.length > 0) {
+				// No cover change, just ensure consecutive display_orders
+				for (let i = 0; i < existingImages.length; i++) {
+					const image = existingImages[i];
+					await supabase
+						.from("post_images")
+						.update({ display_order: i })
+						.eq("id", image.id);
 				}
 			}
 
 			// Upload new images
-			if (newImages.length > 0 && postId) {
-				const startOrder = existingImages.length;
+			if (reorderedNewImages.length > 0 && postId) {
+				// Calculate start order for new images
+				const startOrder = isCoverInNewImages
+					? 0 // Cover new image starts at 0
+					: existingImages.length; // Otherwise start after existing images
 
 				let successCount = 0;
 				let failCount = 0;
 
-				for (let i = 0; i < newImages.length; i++) {
-					const file = newImages[i];
+				for (let i = 0; i < reorderedNewImages.length; i++) {
+					const file = reorderedNewImages[i];
+					// If cover is in new images and this is the cover, it gets order 0
+					// Other new images come after existing images
+					const displayOrder =
+						isCoverInNewImages && i === 0
+							? 0
+							: isCoverInNewImages
+							? existingImages.length + i
+							: startOrder + i;
 					// Sanitize filename: remove special chars, replace spaces with dashes
 					const extension = file.name.split(".").pop() || "jpg";
 					const sanitizedName = `${Date.now()}-${i}.${extension}`;
@@ -232,7 +295,7 @@ export default function PostForm({ post }: PostFormProps) {
 						.insert({
 							post_id: postId,
 							image_url: publicUrl,
-							display_order: startOrder + i,
+							display_order: displayOrder,
 							alt_text: title,
 						});
 
@@ -279,8 +342,22 @@ export default function PostForm({ post }: PostFormProps) {
 	};
 
 	const handleRemoveExistingImage = (imageId: string) => {
+		const removedIndex = existingImages.findIndex(
+			(img) => img.id === imageId
+		);
 		setImagesToDelete([...imagesToDelete, imageId]);
 		setExistingImages(existingImages.filter((img) => img.id !== imageId));
+
+		// Adjust coverIndex if needed
+		if (removedIndex !== -1) {
+			if (removedIndex === coverIndex) {
+				// If we removed the cover, reset to 0
+				setCoverIndex(0);
+			} else if (removedIndex < coverIndex) {
+				// If we removed an image before the cover, shift cover index down
+				setCoverIndex(coverIndex - 1);
+			}
+		}
 	};
 
 	const handleNewImages = (files: File[]) => {
@@ -305,7 +382,17 @@ export default function PostForm({ post }: PostFormProps) {
 	};
 
 	const handleRemoveNewImage = (index: number) => {
+		const globalIndex = existingImages.length + index;
 		setNewImages(newImages.filter((_, i) => i !== index));
+
+		// Adjust coverIndex if needed
+		if (globalIndex === coverIndex) {
+			// If we removed the cover, reset to 0
+			setCoverIndex(0);
+		} else if (globalIndex < coverIndex) {
+			// If we removed an image before the cover, shift cover index down
+			setCoverIndex(coverIndex - 1);
+		}
 	};
 
 	return (
@@ -424,6 +511,8 @@ export default function PostForm({ post }: PostFormProps) {
 					onRemoveExisting={handleRemoveExistingImage}
 					onRemoveNew={handleRemoveNewImage}
 					maxImages={4}
+					coverIndex={coverIndex}
+					onSetCover={setCoverIndex}
 				/>
 			</div>
 

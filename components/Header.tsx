@@ -15,7 +15,7 @@ export default function Header() {
 								alt="Header Brand Image"
 								width={52}
 								height={52}
-								className="w-[44px] h-[44px] sm:w-[52px] sm:h-[52px] group-hover:animate-float inline-block transition-transform"
+								className="w-[40px] h-[40px] sm:w-[48px] sm:h-[48px] group-hover:animate-float inline-block transition-transform"
 							/>
 							<div
 								className="absolute -bottom-1 -right-1 w-3 h-3 bg-lego-yellow rounded-full 

@@ -3,9 +3,6 @@
 		"logout": "Cerrar Sesión",
 		"cancel": "Cancelar"
 	},
-	"header": {
-		"gallery": "Galería"
-	},
 	"footer": {
 		"tagline": "El viaje de un joven Master Builder creando increíbles obras maestras de Lego.",
 		"gallery": "Galería",
@@ -13,13 +10,12 @@
 		"madeWith": "Hecho con ❤️ y muchas piezas"
 	},
 	"hero": {
-		"badge": "Master Builder",
 		"greeting": "Hola, soy un",
 		"title": "Master Builder",
 		"description": "¡Bienvenido a mi portafolio de Lego! Me encanta crear cosas increíbles con bloques. Cada post cuenta una historia, y no puedo esperar a compartirlas todas contigo. 🚀",
-		"status": "Construyendo cosas increíbles, un bloque a la vez!",
 		"exploreGallery": "Explorar Galería",
 		"supportCreations": "Apoya Mi Aventura",
+		"whoAmI": "Mi Historia",
 		"creations": "Creaciones",
 		"totalPieces": "Piezas Totales"
 	},
@@ -34,11 +30,9 @@
 		"description": "Tu apoyo me ayuda a comprar más bloques y crear publicaciones aún más increíbles. ¡Cada contribución hace la diferencia!",
 		"button": "Apoya Mi Aventura"
 	},
-	"support": {
-		"title": "Apoya Mi Aventura",
-		"subtitle": "¡Tu apoyo me ayuda a comprar más bloques y crear publicaciones aún más increíbles!",
-		"thankYou": "¡Gracias!",
-		"thankYouMessage": "Cada contribución me ayuda a conseguir más bloques para construir creaciones increíbles. ¡Realmente aprecio tu apoyo! ❤️"
+	"underConstruction": {
+		"title": "En Construcción",
+		"message": "Estamos trabajando en esto, gracias por tu paciencia."
 	},
 	"build": {
 		"pieces": "piezas",

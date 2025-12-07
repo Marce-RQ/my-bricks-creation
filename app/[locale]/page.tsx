@@ -126,22 +126,7 @@ export default async function HomePage({
 											</div>
 										</div>
 									</div>
-
-									{/* Badge */}
-									<div className="absolute -top-[-2] left-4 sm:left-6 z-20 -rotate-[18deg]">
-										<div className="bg-lego-red text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
-											{t("hero.badge")}
-										</div>
-									</div>
 								</div>
-							</div>
-
-							{/* Status indicator */}
-							<div className="mt-6 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-gray-100">
-								<span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
-								<span className="text-sm font-medium text-gray-700">
-									{t("hero.status")}
-								</span>
 							</div>
 						</div>
 
@@ -179,12 +164,12 @@ export default async function HomePage({
 									</svg>
 								</Link>
 								<Link
-									href="/support"
+									href="/quien-soy"
 									className="btn-outline group"
 								>
 									<span className="w-[26px] h-[26px] inline-flex items-center justify-center">
 										<span className="group-hover:hidden text-lg">
-											❤️
+											👤
 										</span>
 										<Image
 											src="/smiley-lego.png"
@@ -194,7 +179,7 @@ export default async function HomePage({
 											className="hidden group-hover:inline-block"
 										/>
 									</span>
-									{t("hero.supportCreations")}
+									{t("hero.whoAmI")}
 								</Link>
 							</div>
 
@@ -202,15 +187,15 @@ export default async function HomePage({
 							{posts.length > 0 && (
 								<div className="flex gap-8 justify-center lg:justify-start mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-gray-200">
 									<div>
-										<p className="text-2xl sm:text-3xl font-heading font-bold text-lego-dark">
+										<p className="text-2xl sm:text-3xl font-heading font-bold text-lego-dark text-center">
 											{posts.length}
 										</p>
-										<p className="text-xs sm:text-sm text-gray-500">
+										<p className="text-xs sm:text-sm text-gray-500 text-center">
 											{t("hero.creations")}
 										</p>
 									</div>
 									<div>
-										<p className="text-2xl sm:text-3xl font-heading font-bold text-lego-dark">
+										<p className="text-2xl sm:text-3xl font-heading font-bold text-lego-dark text-center">
 											{posts
 												.reduce(
 													(acc, post) =>
@@ -220,7 +205,7 @@ export default async function HomePage({
 												)
 												.toLocaleString()}
 										</p>
-										<p className="text-xs sm:text-sm text-gray-500">
+										<p className="text-xs sm:text-sm text-gray-500 text-center">
 											{t("hero.totalPieces")}
 										</p>
 									</div>

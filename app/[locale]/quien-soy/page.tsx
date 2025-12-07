@@ -1,14 +1,7 @@
-import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import UnderConstruction from "@/components/UnderConstruction";
 
-export const metadata: Metadata = {
-	title: "Support | MyBricksCreations",
-	description:
-		"Support a young Master Builder's Lego creations with cryptocurrency donations.",
-};
-
-export default async function SupportPage({
+export default async function QuienSoyPage({
 	params,
 }: {
 	params: Promise<{ locale: string }>;

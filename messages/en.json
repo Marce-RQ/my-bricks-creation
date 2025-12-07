@@ -3,9 +3,6 @@
 		"logout": "Logout",
 		"cancel": "Cancel"
 	},
-	"header": {
-		"gallery": "Gallery"
-	},
 	"footer": {
 		"tagline": "A young Master Builder's journey in creating amazing Lego masterpieces.",
 		"gallery": "Gallery",
@@ -13,13 +10,12 @@
 		"madeWith": "Made with ❤️ and lots of bricks"
 	},
 	"hero": {
-		"badge": "Master Builder",
 		"greeting": "Hi, I'm a",
 		"title": "Master Builder",
 		"description": "Welcome to my Lego portfolio! I love creating amazing things with bricks. Each build tells a story, and I can't wait to share them all with you. 🚀",
-		"status": "Building amazing things, one brick at a time!",
 		"exploreGallery": "Explore Gallery",
 		"supportCreations": "Support My Journey",
+		"whoAmI": "My Story?",
 		"creations": "Creations",
 		"totalPieces": "Total Pieces"
 	},
@@ -31,14 +27,12 @@
 	},
 	"cta": {
 		"title": "Enjoyed my creations?",
-		"description": "Your support helps me buy more bricks and create even more amazing builds. Every contribution makes a difference!",
+		"description": "",
 		"button": "Support My Journey"
 	},
-	"support": {
-		"title": "Support My Journey",
-		"subtitle": "Your support helps me buy more bricks and create even more amazing builds!",
-		"thankYou": "Thank You!",
-		"thankYouMessage": "Every contribution helps me get more bricks to build amazing creations. I really appreciate your support! ❤️"
+	"underConstruction": {
+		"title": "Under Construction",
+		"message": "We are working on this, thanks for your patience."
 	},
 	"build": {
 		"pieces": "pieces",

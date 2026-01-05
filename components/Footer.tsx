@@ -43,7 +43,7 @@ export default function Footer() {
               {t('support')}
             </Link>
             <Link
-              href="/quien-soy"
+              href="/my-story"
               className="text-gray-300 hover:text-lego-yellow transition-colors font-medium"
             >
               {t('My Story')}

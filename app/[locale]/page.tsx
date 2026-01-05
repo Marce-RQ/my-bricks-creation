@@ -163,7 +163,7 @@ export default async function MainPage({
                     />
                   </svg>
                 </Link>
-                <Link href="/quien-soy" className="btn-outline group">
+                <Link href="/my-story" className="btn-outline group">
                   <span className="w-[26px] h-[26px] inline-flex items-center justify-center">
                     <span className="group-hover:hidden text-lg">👤</span>
                     <Image

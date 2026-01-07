@@ -1,304 +1,288 @@
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
-import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
-import ImageCarousel from "@/components/ImageCarousel";
-import { formatDate, truncateText } from "@/lib/utils";
-import type { PostWithImages } from "@/lib/types";
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { createClient } from '@/lib/supabase/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
+import ImageCarousel from '@/components/ImageCarousel';
+import { formatDate, truncateText } from '@/lib/utils';
+import type { PostWithImages } from '@/lib/types';
 
 interface BuildPageProps {
-	params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 async function getPost(slug: string): Promise<PostWithImages | null> {
-	const supabase = await createClient();
+  const supabase = await createClient();
 
-	const { data: post, error } = await supabase
-		.from("posts")
-		.select("*")
-		.eq("slug", slug)
-		.eq("status", "published")
-		.single();
+  const { data: post, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .single();
 
-	if (error || !post) {
-		return null;
-	}
+  if (error || !post) {
+    return null;
+  }
 
-	const { data: images } = await supabase
-		.from("post_images")
-		.select("*")
-		.eq("post_id", post.id)
-		.order("display_order", { ascending: true });
+  const { data: images } = await supabase
+    .from('post_images')
+    .select('*')
+    .eq('post_id', post.id)
+    .order('display_order', { ascending: true });
 
-	return {
-		...post,
-		images: images || [],
-	};
+  return {
+    ...post,
+    images: images || [],
+  };
 }
 
 export async function generateMetadata({
-	params,
+  params,
 }: BuildPageProps): Promise<Metadata> {
-	const { slug } = await params;
-	const post = await getPost(slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
-	if (!post) {
-		return {
-			title: "Build Not Found | MyBricksCreations",
-		};
-	}
+  if (!post) {
+    return {
+      title: 'Build Not Found | MyBricksCreations',
+    };
+  }
 
-	const description = post.description
-		? truncateText(post.description, 160)
-		: `Check out this amazing Lego creation: ${post.title}`;
+  const description = post.description
+    ? truncateText(post.description, 160)
+    : `Check out this amazing Lego creation: ${post.title}`;
 
-	const ogImage = post.images[0]?.image_url;
+  const ogImage = post.images[0]?.image_url;
 
-	return {
-		title: `${post.title} | MyBricksCreations`,
-		description,
-		openGraph: {
-			title: post.title,
-			description,
-			type: "article",
-			images: ogImage ? [{ url: ogImage }] : undefined,
-		},
-	};
+  return {
+    title: `${post.title} | MyBricksCreations`,
+    description,
+    openGraph: {
+      title: post.title,
+      description,
+      type: 'article',
+      images: ogImage ? [{ url: ogImage }] : undefined,
+    },
+  };
 }
 
 export default async function BuildPage({ params }: BuildPageProps) {
-	const { locale, slug } = await params;
-	setRequestLocale(locale);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
 
-	const t = await getTranslations("build");
-	const post = await getPost(slug);
+  const t = await getTranslations('build');
+  const post = await getPost(slug);
 
-	if (!post) {
-		notFound();
-	}
+  if (!post) {
+    notFound();
+  }
 
-	return (
-		<div className="min-h-screen bg-gradient-to-b from-lego-bg to-white">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-				{/* Breadcrumb */}
-				<nav className="mb-8 animate-in">
-					<Link
-						href="/"
-						className="inline-flex items-center gap-2 text-gray-500 hover:text-lego-red 
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-lego-bg to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        {/* Breadcrumb */}
+        <nav className="mb-8 animate-in">
+          <Link
+            href="/#gallery"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-lego-red 
                      transition-colors group"
-					>
-						<span
-							className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center
+          >
+            <span
+              className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center
                            group-hover:shadow-md transition-shadow"
-						>
-							<svg
-								className="w-4 h-4"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M10 19l-7-7m0 0l7-7m-7 7h18"
-								/>
-							</svg>
-						</span>
-						<span className="font-medium">
-							{t("backToGallery")}
-						</span>
-					</Link>
-				</nav>
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </span>
+            <span className="font-medium">{t('backToGallery')}</span>
+          </Link>
+        </nav>
 
-				<div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
-					{/* Title - Shows on mobile above image */}
-					<div className="lg:hidden animate-in">
-						<div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-							<span className="w-2 h-2 bg-green-500 rounded-full" />
-							{t("published")}{" "}
-							{post.published_at
-								? formatDate(post.published_at)
-								: formatDate(post.created_at)}
-						</div>
-						<h1 className="text-4xl sm:text-5xl font-heading font-extrabold text-lego-dark leading-tight tracking-tight">
-							{post.title}
-						</h1>
-					</div>
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
+          {/* Title - Shows on mobile above image */}
+          <div className="lg:hidden animate-in">
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+              <span className="w-2 h-2 bg-green-500 rounded-full" />
+              {t('published')}{' '}
+              {post.published_at
+                ? formatDate(post.published_at)
+                : formatDate(post.created_at)}
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-heading font-extrabold text-lego-dark leading-tight tracking-tight">
+              {post.title}
+            </h1>
+          </div>
 
-					{/* Image Section */}
-					<div
-						className="animate-in"
-						style={{ animationDelay: "100ms" }}
-					>
-						<div className="sticky top-28">
-							<ImageCarousel
-								images={post.images}
-								title={post.title}
-							/>
-						</div>
-					</div>
+          {/* Image Section */}
+          <div className="animate-in" style={{ animationDelay: '100ms' }}>
+            <div className="sticky top-28">
+              <ImageCarousel images={post.images} title={post.title} />
+            </div>
+          </div>
 
-					{/* Content Section */}
-					<div
-						className="flex flex-col gap-8 animate-in"
-						style={{ animationDelay: "200ms" }}
-					>
-						{/* Title - Hidden on mobile, shown on desktop */}
-						<div className="hidden lg:block">
-							<div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-								<span className="w-2 h-2 bg-green-500 rounded-full" />
-								{t("published")}{" "}
-								{post.published_at
-									? formatDate(post.published_at)
-									: formatDate(post.created_at)}
-							</div>
-							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-lego-dark leading-tight tracking-tight">
-								{post.title}
-							</h1>
-						</div>
+          {/* Content Section */}
+          <div
+            className="flex flex-col gap-8 animate-in"
+            style={{ animationDelay: '200ms' }}
+          >
+            {/* Title - Hidden on mobile, shown on desktop */}
+            <div className="hidden lg:block">
+              <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                <span className="w-2 h-2 bg-green-500 rounded-full" />
+                {t('published')}{' '}
+                {post.published_at
+                  ? formatDate(post.published_at)
+                  : formatDate(post.created_at)}
+              </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-lego-dark leading-tight tracking-tight">
+                {post.title}
+              </h1>
+            </div>
 
-						{/* Description - Shows first on mobile */}
-						{post.description && (
-							<div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100 order-first lg:order-none">
-								<div className="flex items-center gap-3 mb-4">
-									<div className="w-10 h-10 bg-lego-red/10 rounded-lg flex items-center justify-center">
-										<span className="text-xl">📖</span>
-									</div>
-									<h2 className="text-xl font-heading font-bold text-lego-dark">
-										{t("theStory")}
-									</h2>
-								</div>
-								<div className="prose prose-gray max-w-none">
-									<p className="text-gray-600 text-base leading-7 whitespace-pre-wrap">
-										{post.description}
-									</p>
-								</div>
-							</div>
-						)}
+            {/* Description - Shows first on mobile */}
+            {post.description && (
+              <div className="bg-white rounded-xl p-6 shadow-soft border border-gray-100 order-first lg:order-none">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-lego-red/10 rounded-lg flex items-center justify-center">
+                    <span className="text-xl">📖</span>
+                  </div>
+                  <h2 className="text-xl font-heading font-bold text-lego-dark">
+                    {t('theStory')}
+                  </h2>
+                </div>
+                <div className="prose prose-gray max-w-none">
+                  <p className="text-gray-600 text-base leading-7 whitespace-pre-wrap">
+                    {post.description}
+                  </p>
+                </div>
+              </div>
+            )}
 
-						{/* Stats Cards */}
-						<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-							{post.piece_count && (
-								<div className="bg-lego-blue-50 rounded-xl p-4 shadow-soft border border-lego-blue-100 flex flex-col items-center text-center">
-									<div className="w-10 h-10 bg-lego-blue/15 rounded-lg flex items-center justify-center mb-3">
-										<svg
-											className="w-5 h-5 text-lego-blue"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-											/>
-										</svg>
-									</div>
-									<p className="text-2xl font-bold text-lego-dark">
-										{post.piece_count.toLocaleString()}
-									</p>
-									<p className="text-sm text-gray-500">
-										{t("pieces")}
-									</p>
-								</div>
-							)}
-							{post.date_start && (
-								<div className="bg-lego-yellow-50 rounded-xl p-4 shadow-soft border border-lego-yellow-200 flex flex-col items-center text-center">
-									<div className="w-10 h-10 bg-lego-yellow/30 rounded-lg flex items-center justify-center mb-3">
-										<svg
-											className="w-5 h-5 text-lego-yellow-600"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-											/>
-										</svg>
-									</div>
-									<p className="text-sm font-semibold text-lego-dark">
-										{formatDate(post.date_start)}
-									</p>
-									<p className="text-sm text-gray-500">
-										{t("started")}
-									</p>
-								</div>
-							)}
-							{post.date_completed && (
-								<div className="bg-green-50 rounded-xl p-4 shadow-soft border border-green-200 flex flex-col items-center text-center">
-									<div className="w-10 h-10 bg-green-200 rounded-lg flex items-center justify-center mb-3">
-										<svg
-											className="w-5 h-5 text-green-600"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-											/>
-										</svg>
-									</div>
-									<p className="text-sm font-semibold text-lego-dark">
-										{formatDate(post.date_completed)}
-									</p>
-									<p className="text-sm text-gray-500">
-										{t("completed")}
-									</p>
-								</div>
-							)}
-						</div>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {post.piece_count && (
+                <div className="bg-lego-blue-50 rounded-xl p-4 shadow-soft border border-lego-blue-100 flex flex-col items-center text-center">
+                  <div className="w-10 h-10 bg-lego-blue/15 rounded-lg flex items-center justify-center mb-3">
+                    <svg
+                      className="w-5 h-5 text-lego-blue"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-2xl font-bold text-lego-dark">
+                    {post.piece_count.toLocaleString()}
+                  </p>
+                  <p className="text-sm text-gray-500">{t('pieces')}</p>
+                </div>
+              )}
+              {post.date_start && (
+                <div className="bg-lego-yellow-50 rounded-xl p-4 shadow-soft border border-lego-yellow-200 flex flex-col items-center text-center">
+                  <div className="w-10 h-10 bg-lego-yellow/30 rounded-lg flex items-center justify-center mb-3">
+                    <svg
+                      className="w-5 h-5 text-lego-yellow-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-semibold text-lego-dark">
+                    {formatDate(post.date_start)}
+                  </p>
+                  <p className="text-sm text-gray-500">{t('started')}</p>
+                </div>
+              )}
+              {post.date_completed && (
+                <div className="bg-green-50 rounded-xl p-4 shadow-soft border border-green-200 flex flex-col items-center text-center">
+                  <div className="w-10 h-10 bg-green-200 rounded-lg flex items-center justify-center mb-3">
+                    <svg
+                      className="w-5 h-5 text-green-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-semibold text-lego-dark">
+                    {formatDate(post.date_completed)}
+                  </p>
+                  <p className="text-sm text-gray-500">{t('completed')}</p>
+                </div>
+              )}
+            </div>
 
-						{/* Support CTA */}
-						<div
-							className="relative overflow-hidden bg-gradient-to-br from-amber-500 to-amber-600 
+            {/* Support CTA */}
+            <div
+              className="relative overflow-hidden bg-gradient-to-br from-amber-500 to-amber-600 
                           p-8 rounded-2xl text-white"
-						>
-							{/* Decorative elements */}
-							<div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-							<div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
 
-							<div className="relative z-10">
-								<span className="text-4xl mb-4 block">🐼</span>
-								<h3 className="text-xl font-heading font-bold mb-2">
-									{t("enjoyedCreation")}
-								</h3>
-								<p className="text-white/90 mb-6">
-									{t("supportMessage")}
-								</p>
-								<Link
-									href="/support"
-									className="inline-flex items-center gap-2 bg-white text-amber-600 px-6 py-3 
+              <div className="relative z-10">
+                <span className="text-4xl mb-4 block">🐼</span>
+                <h3 className="text-xl font-heading font-bold mb-2">
+                  {t('enjoyedCreation')}
+                </h3>
+                <p className="text-white/90 mb-6">{t('supportMessage')}</p>
+                <Link
+                  href="/support"
+                  className="inline-flex items-center gap-2 bg-white text-amber-600 px-6 py-3 
                            rounded-xl font-semibold shadow-lg hover:bg-gray-50 hover:shadow-xl transition-all"
-								>
-									❤️ {t("supportMe")}
-									<svg
-										className="w-4 h-4"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M17 8l4 4m0 0l-4 4m4-4H3"
-										/>
-									</svg>
-								</Link>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+                >
+                  ❤️ {t('supportMe')}
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

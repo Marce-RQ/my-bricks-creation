@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 
 async function getStats() {
 	const supabase = await createClient();
@@ -80,6 +81,10 @@ async function getStorageUsage() {
 		percentage: Math.min(percentage, 100),
 	};
 }
+
+export const metadata: Metadata = {
+	title: "Admin | My Bricks Creations",
+};
 
 export default async function AdminDashboard({
 	params,

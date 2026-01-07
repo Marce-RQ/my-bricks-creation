@@ -22,7 +22,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "A Young Builder's Portfolio",
+  title: "My Bricks Creations",
   description:
     'Explore amazing Lego creations from a young Master Builder. View the gallery of builds, read their stories, and support the creator.',
   keywords: ['Lego', 'creations', 'builds', 'portfolio', 'master builder'],

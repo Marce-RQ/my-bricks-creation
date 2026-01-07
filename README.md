@@ -1,5 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Bricks Creations
 
+## QA Focus and Test Automation
+
+This website was built with AI assistance, leaning into vibe coding for rapid UI development. The end-to-end QA automation framework was designed separately from a QA engineer’s perspective, with a manually implemented Page Object Model (POM).
+
+- **Approach**
+  - QA-first mindset: features were explored and validated via automated tests.
+  - Website development using Windsurf (vibecoding); the QA framework and Page Object Model (POM) were implemented deliberately and manually.
+  - Deployed to Vercel for quick preview/production validation.
+
+## Test Automation Overview (Playwright)
+
+```
+my-bricks-creation/
+├── playwright.config.js # Playwright configuration
+├── tests/
+│   ├── config/
+│   │   └── env.js # Environment URLs
+│   ├── pages/ # Page Object Model: Locators and Actions
+│   │   ├── admin/
+│   │   │   └── AdminLogin.page.js
+│   │   └── user/
+│   │       ├── Build.page.js
+│   │       └── MainPage.page.js
+│   └── specs/ # Test suites
+│       ├── admin/
+│       │   └── adminLogin.spec.js
+│       └── user/
+│           ├── buildPageExploration.spec.js
+│           └── landingSiteExploration.spec.js
+└── package.json # Dependencies
+```
+
+- **Key Scenarios Covered**
+  - Admin login: page load (EN/ES), valid/invalid credentials, empty submit, email case-insensitivity, password case-sensitivity, toast notifications, dashboard visibility.
+  - User landing: header brand navigation, language switcher (EN/ES), gallery link scroll, My Story link, counters visibility, featured build image load, Support link.
+  - Build page: image visibility and carousel next/prev, build details (title, dates, pieces, story), Support and Back to Gallery links.
+
+> **Note:** Tests are not completed; more scenarios for the Admin site will be added in the future.
+  
+
+## Running the Tests
+The tests are designed to run against the local development server by default. To run them:
+
+1) Install dependencies
+
+```bash
+npm install
+```
+
+2) Set environment variables for admin login tests (used by `adminLogin.spec.js`)
+
+```bash
+export ADMIN_EMAIL="your-admin-email@example.com"
+export ADMIN_PASSWORD="your-strong-password"
+```
+
+3) Run the full Playwright test suite
+
+```bash
+npx playwright test
+```
+
+Optional:
+
+- Run in headed mode
+
+```bash
+npx playwright test --headed
+```
+
+- Open the HTML report after a run
+
+```bash
+npx playwright show-report
+```
+
+Notes:
+
+- Tests default to run against the local dev server as configured in `playwright.config.js`.
+- To target production manually, update `use.baseURL` in `playwright.config.js` (see `tests/config/env.js` for URLs) and re-run.
+
+## Deployment
+
+- Hosted on Vercel. Production URL used in tests config: `https://my-bricks-creations.vercel.app`.
+```
+```
+---
+
+
+# Developers Guide 
 ## Getting Started
 
 First, run the development server:
@@ -14,23 +104,64 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Next.js 14 (App Router)
+- React 18
+- TypeScript
+- Tailwind CSS
+- PostCSS
+- next/font (Geist)
+- react-hot-toast
+- Supabase (Auth, DB, Storage)
+- dotenv
+- next-intl (i18n)
+- react-dropzone
+- Playwright (E2E tests)
+- Page Object Model
+- ESLint
+- Prettier
+- Windsurf (AI-assisted IDE)
+- Vercel (hosting)
+- npm/yarn/pnpm/bun
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Additional Developer Info
 
-## Learn More
+- **Environment Setup**
+  - Copy `.env.example` to `.env.local` and set:
+    - `NEXT_PUBLIC_SUPABASE_URL`
+    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+    - `ADMIN_EMAIL`
+    - `ADMIN_PASSWORD`
+- **Scripts**
+  - `npm run dev` – start dev server
+  - `npm run build` – build for production
+  - `npm start` – start production server
+  - `npm run lint` – lint code
+  - `npx playwright test` – run E2E tests
+- **Prerequisites**
+  - Node.js (check `.nvmrc` or `package.json` engines)
+  - `npx playwright install` – install Playwright browsers
+- **Project Structure**
+  - `app/` – Next.js App Router pages and API
+  - `components/` – React components
+  - `lib/` – utilities, Supabase client, types
+  - `tests/` – Playwright specs and page objects
+  - `supabase/migrations/` – DB schema
+- **Running Tests**
+  - Export admin credentials:
+    ```bash
+    export ADMIN_EMAIL="your-admin@example.com"
+    export ADMIN_PASSWORD="your-password"
+    npx playwright test
+    ```
+- **Linting/Formatting**
+  - `npm run lint`
+  - `npm run format` (if added)
+- **Deployment**
+  - Set environment variables in Vercel dashboard
+- **Database**
+  - Apply migrations via Supabase dashboard or CLI
+- **Contributing**
+  - Feature branches, PRs, and code reviews expected
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

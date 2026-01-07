@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../pages/MainPage.page.js';
-import { BuildPage } from '../pages/Build.page.js';
 
 test.describe('User portal main landing page', () => {
   let mainPage;

@@ -68,7 +68,7 @@ export default function LoginForm() {
 					onChange={(e) => setPassword(e.target.value)}
 					required
 					className="input-field"
-					placeholder="••••••••"
+					placeholder="your password here"
 					disabled={loading}
 				/>
 			</div>

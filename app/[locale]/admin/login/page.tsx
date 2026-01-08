@@ -17,11 +17,10 @@ export default async function AdminLoginPage({
   const tAdmin = await getTranslations('admin');
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-lego-bg py-12 px-4">
-      <div className="max-w-md w-full">
+    <div className="bg-lego-bg py-4 px-4 flex-grow">
+      <div className="max-w-md w-full mx-auto pt-16">
         <div className="text-center mb-8">
-          <span className="text-6xl">🧱</span>
-          <h1 className="text-3xl font-heading font-bold text-lego-dark mt-4">
+          <h1 className="text-3xl font-heading font-bold text-lego-dark">
             {t('title')}
           </h1>
           <p className="text-gray-600 mt-2">{tAdmin('signInToManage')}</p>

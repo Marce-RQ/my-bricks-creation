@@ -51,13 +51,13 @@ export class BuildPage {
 
   // Build details (Data pulled from Supabase)
   async verifyBuildDetails() {
+    await expect(this.publishedDate()).toBeVisible();
     await expect(this.buildTitle()).toBeVisible();
     await expect(this.storyHeader()).toBeVisible();
     await expect(this.storyBody()).toBeVisible();
     await expect(this.piecesCount()).toBeVisible();
     await expect(this.startedDate()).toBeVisible();
     await expect(this.completedDate()).toBeVisible();
-    await expect(this.publishedDate()).toBeVisible();
   }
 
   // Links

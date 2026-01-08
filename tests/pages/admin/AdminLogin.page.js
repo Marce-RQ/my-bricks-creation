@@ -1,4 +1,3 @@
-// tests/pages/AdminLoginPage.js
 export class AdminLoginPage {
   constructor(page) {
     this.page = page;

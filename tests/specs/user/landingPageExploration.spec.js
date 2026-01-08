@@ -1,33 +1,33 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../../pages/user/MainPage.page.js';
+import { LandingPage } from '../../pages/user/LandingPage.page.js';
 
 test.describe('User portal main landing page', () => {
-  let mainPage;
+  let landingPage;
 
   test.beforeEach(async ({ page }) => {
-    mainPage = new MainPage(page);
-    await mainPage.goto();
+    landingPage = new LandingPage(page);
+    await landingPage.goto();
   });
 
   test('header brand logo navigates to home page', async ({ page }) => {
     await page.goto('/my-story');
-    await mainPage.clickHeaderBrandLogo();
-    await expect(mainPage.mainHeadingEnglish()).toBeVisible();
+    await landingPage.clickHeaderBrandLogo();
+    await expect(landingPage.mainHeadingEnglish()).toBeVisible();
   });
 
   test('change language feature works', async ({ page }) => {
-    await mainPage.clickLanguageSwitcher();
-    await mainPage.selectSpanishLanguage();
-    await expect(mainPage.mainHeadingSpanish()).toContainText('Hola');
-    await mainPage.clickLanguageSwitcher();
-    await mainPage.selectEnglishLanguage();
-    await expect(mainPage.mainHeadingEnglish()).toContainText('Hi');
+    await landingPage.clickLanguageSwitcher();
+    await landingPage.selectSpanishLanguage();
+    await expect(landingPage.mainHeadingSpanish()).toContainText('Hola');
+    await landingPage.clickLanguageSwitcher();
+    await landingPage.selectEnglishLanguage();
+    await expect(landingPage.mainHeadingEnglish()).toContainText('Hi');
   });
 
   test('explore Gallery link navigates to gallery section', async ({
     page,
   }) => {
-    await mainPage.clickExploreGalleryLink();
+    await landingPage.clickExploreGalleryLink();
     // Assuming gallery section has id 'gallery'
     await expect(
       page.locator('text=Each build is a new adventure')
@@ -35,30 +35,31 @@ test.describe('User portal main landing page', () => {
   });
 
   test('My Story link navigates to My Story section', async ({ page }) => {
-    await mainPage.clickMyStoryLink();
+    await landingPage.clickMyStoryLink();
     await expect(page).toHaveURL(/\/(my-story|quien-soy)/);
   });
 
   test("Builds' counters display visible numeric values", async ({ page }) => {
-    await expect(mainPage.creationCounter()).toHaveText(/\d+/);
-    await expect(mainPage.totalPiecesCounter()).toHaveText(/\d+/);
+    await expect(landingPage.creationCounter()).toHaveText(/\d+/);
+    await expect(landingPage.totalPiecesCounter()).toHaveText(/\d+/);
   });
 
   test("View Build button navigates to specific build's page", async ({
     page,
   }) => {
-    await mainPage.clickYodaViewBuildButton();
+    await landingPage.clickYodaViewBuildButton();
     await expect(page).toHaveURL(/\/builds\/yoda-pilot/);
   });
 
-  test.only("Build's image is visible and loaded", async ({ page }) => {
-    await mainPage.verifyYodaPilotImageLoaded();
+  test("Build's image is visible and loaded", async ({ page }) => {
+    await page.goto('/#gallery');
+    await landingPage.verifyYodaPilotImageLoaded();
   });
 
   test('Support My Journey link navigates to support page', async ({
     page,
   }) => {
-    await mainPage.clickSupportMyJourneyLink();
+    await landingPage.clickSupportMyJourneyLink();
     await expect(page).toHaveURL(/\/support/);
   });
 

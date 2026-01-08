@@ -253,7 +253,7 @@ export default async function AdminDashboard({
 						</div>
 						<div>
 							<p className="font-semibold text-lego-dark group-hover:text-white transition-colors">
-								{t("viewSite")}
+								{t("viewUserSite")}
 							</p>
 							<p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors">
 								{t("openPublicGallery")}

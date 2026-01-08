@@ -22,13 +22,13 @@ my-bricks-creation/
 │   │   │   └── AdminLogin.page.js
 │   │   └── user/
 │   │       ├── Build.page.js
-│   │       └── MainPage.page.js
+│   │       └── LandingPage.page.js
 │   └── specs/ # Test suites
 │       ├── admin/
 │       │   └── adminLogin.spec.js
 │       └── user/
 │           ├── buildPageExploration.spec.js
-│           └── landingSiteExploration.spec.js
+│           └── landingPageExploration.spec.js
 └── package.json # Dependencies
 ```
 

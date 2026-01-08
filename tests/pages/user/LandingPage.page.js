@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-export class MainPage {
+export class LandingPage {
   constructor(page) {
     this.page = page;
   }
@@ -38,7 +38,7 @@ export class MainPage {
   totalPiecesCounter = () => this.page.getByLabel('pieces-counter');
 
   //My Creations Section
-  yodaPilotImage = () => this.page.locator('img[alt="Yoda Pilot"]');
+  yodaPilotImage = () => this.page.locator('img[alt*="Helicopter"]');
   yodaViewBuildButton = () =>
     this.page.locator('a[href*="/builds/yoda-pilot"]');
 

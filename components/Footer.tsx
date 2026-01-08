@@ -31,7 +31,7 @@ export default function Footer() {
           {/* Links */}
           <nav className="flex justify-center gap-8">
             <Link
-              href="#gallery"
+              href="/#gallery"
               className="text-gray-300 hover:text-lego-yellow transition-colors font-medium"
             >
               {t('gallery')}

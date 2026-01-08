@@ -38,7 +38,7 @@ async function getPosts(): Promise<PostWithImages[]> {
   return postsWithImages;
 }
 
-export default async function MainPage({
+export default async function LandingPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -147,7 +147,7 @@ export default async function MainPage({
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
-                <Link href="#gallery" className="btn-primary">
+                <Link href="/#gallery" className="btn-primary">
                   {t('hero.exploreGallery')}
                   <svg
                     className="w-5 h-5"

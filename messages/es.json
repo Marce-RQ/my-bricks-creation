@@ -1,6 +1,6 @@
 {
   "common": {
-    "logout": "Cerrar Sesión",
+    "logout": "Cerrar",
     "cancel": "Cancelar"
   },
   "footer": {
@@ -70,7 +70,7 @@
     "noPostsYet": "Aún no hay publicaciones",
     "createFirst": "¡Crea tu primer post!",
     "adminPanel": "Panel de Admin",
-    "backToUserSite": "Volver a Sitio de Usuario",
+    "backToUserSite": "Sitio de Usuario",
     "logoutSuccess": "Sesión cerrada exitosamente",
     "welcomeBack": "¡Bienvenido de Nuevo!",
     "overviewDescription": "Aquí tienes un resumen de tus creaciones de Lego",
@@ -82,7 +82,7 @@
     "addNewCreation": "Agregar una nueva creación",
     "managePosts": "Gestionar Publicaciones",
     "editOrDelete": "Editar o eliminar publicaciones",
-    "viewSite": "Ver Sitio",
+    "viewUserSite": "Sitio de Usuario",
     "openPublicGallery": "Abrir galería pública",
     "storageUsage": "Uso de Almacenamiento",
     "storageInfo": "El nivel gratuito de Supabase proporciona 1GB de almacenamiento para imágenes",

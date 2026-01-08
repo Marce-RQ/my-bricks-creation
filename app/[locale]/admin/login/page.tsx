@@ -18,7 +18,7 @@ export default async function AdminLoginPage({
 
   return (
     <div className="bg-lego-bg py-4 px-4 flex-grow">
-      <div className="max-w-md w-full mx-auto pt-16">
+      <div className="max-w-md w-full mx-auto pt-16 md:pt-28">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-heading font-bold text-lego-dark">
             {t('title')}

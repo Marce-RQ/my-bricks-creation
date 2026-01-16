@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+import NewBuildButton from "@/components/NewBuildButton";
 
 async function getStats() {
 	const supabase = await createClient();
@@ -143,22 +144,7 @@ export default async function AdminDashboard({
 						{t("overviewDescription")}
 					</p>
 				</div>
-				<Link href="/admin/posts/new" className="btn-primary">
-					<svg
-						className="w-5 h-5"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M12 4v16m8-8H4"
-						/>
-					</svg>
-					{t("newBuild")}
-				</Link>
+				<NewBuildButton variant="primary" />
 			</div>
 
 			{/* Stats Grid */}
@@ -198,26 +184,7 @@ export default async function AdminDashboard({
 					{t("quickActions")}
 				</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-					<Link
-						href="/admin/posts/new"
-						className="group flex items-center gap-4 p-4 rounded-xl bg-lego-red/5 
-                     hover:bg-lego-red transition-colors"
-					>
-						<div
-							className="w-12 h-12 rounded-xl bg-lego-red/10 group-hover:bg-white/20 
-                          flex items-center justify-center transition-colors"
-						>
-							<span className="text-2xl">➕</span>
-						</div>
-						<div>
-							<p className="font-semibold text-lego-dark group-hover:text-white transition-colors">
-								{t("createNewBuild")}
-							</p>
-							<p className="text-sm text-gray-500 group-hover:text-white/70 transition-colors">
-								{t("addNewCreation")}
-							</p>
-						</div>
-					</Link>
+					<NewBuildButton variant="quickAction" />
 
 					<Link
 						href="/admin/posts"

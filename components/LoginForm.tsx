@@ -26,6 +26,7 @@ export default function LoginForm() {
 
 			if (error) {
 				toast.error(error.message);
+				setLoading(false);
 				return;
 			}
 
@@ -34,7 +35,6 @@ export default function LoginForm() {
 			router.refresh();
 		} catch {
 			toast.error("An unexpected error occurred");
-		} finally {
 			setLoading(false);
 		}
 	};

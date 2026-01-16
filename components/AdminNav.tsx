@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
@@ -10,12 +11,21 @@ export default function AdminNav() {
 	const router = useRouter();
 	const t = useTranslations("admin");
 	const tCommon = useTranslations("common");
+	const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 	const handleLogout = async () => {
-		const supabase = createClient();
-		await supabase.auth.signOut();
-		toast.success(t("logoutSuccess"));
-		router.push("/admin/login");
+		setIsLoggingOut(true);
+		try {
+			const supabase = createClient();
+			await supabase.auth.signOut();
+			toast.success(t("logoutSuccess"));
+			router.push("/admin/login");
+			router.refresh();
+		} catch {
+			toast.error("Failed to logout");
+		} finally {
+			setIsLoggingOut(false);
+		}
 	};
 
 	const navItems = [
@@ -63,25 +73,36 @@ export default function AdminNav() {
 						<div className="w-px h-5 bg-gray-600" />
 						<button
 							onClick={handleLogout}
+							disabled={isLoggingOut}
 							className="flex items-center gap-2 px-3 py-1.5 rounded-lg 
 								border border-gray-500 text-gray-300 
 								hover:border-red-400 hover:text-red-400 
-								transition-all duration-200 text-sm font-medium"
+								transition-all duration-200 text-sm font-medium
+								disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							<svg
-								className="w-4 h-4"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-								/>
-							</svg>
-							{tCommon("logout")}
+							{isLoggingOut ? (
+								<>
+									<div className="w-4 h-4 border-2 border-gray-400 border-t-white rounded-full animate-spin"></div>
+									{tCommon("logout")}...
+								</>
+							) : (
+								<>
+									<svg
+										className="w-4 h-4"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+										/>
+									</svg>
+									{tCommon("logout")}
+								</>
+							)}
 						</button>
 					</div>
 				</div>

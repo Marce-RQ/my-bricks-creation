@@ -1,5 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import type { PostWithImages } from "@/lib/types";
 
 interface BuildCardProps {
@@ -7,8 +10,21 @@ interface BuildCardProps {
 }
 
 export default function BuildCard({ post }: BuildCardProps) {
+	const router = useRouter();
+	const [isLoading, setIsLoading] = useState(false);
 	const mainImage =
 		post.images.find((img) => img.display_order === 0) || post.images[0];
+
+	const handleViewBuild = (e: React.MouseEvent) => {
+		e.preventDefault();
+		setIsLoading(true);
+		router.push(`/builds/${post.slug}`);
+		
+		// Reset loading state after a delay
+		setTimeout(() => {
+			setIsLoading(false);
+		}, 2000);
+	};
 
 	return (
 		<Link href={`/builds/${post.slug}`} className="block group">
@@ -67,11 +83,19 @@ export default function BuildCard({ post }: BuildCardProps) {
                         opacity-0 group-hover:opacity-100 transition-all duration-300"
 					>
 						<span
+							onClick={handleViewBuild}
 							className="bg-white text-lego-dark px-6 py-2.5 rounded-full font-semibold 
                            shadow-lg transform translate-y-4 group-hover:translate-y-0 
-                           transition-transform duration-300"
+                           transition-transform duration-300 cursor-pointer flex items-center gap-2"
 						>
-							View Build
+							{isLoading ? (
+								<>
+									<div className="w-4 h-4 border-2 border-gray-400 border-t-lego-red rounded-full animate-spin"></div>
+									Loading...
+								</>
+							) : (
+								"View Build"
+							)}
 						</span>
 					</div>
 				</div>

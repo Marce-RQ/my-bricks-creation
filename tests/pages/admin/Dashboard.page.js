@@ -26,7 +26,7 @@ export class Dashboard {
   overviewDescription = () =>
     this.page.getByText(/overview of your Lego creations/i);
   newBuildButton = () =>
-    this.page.getByRole('link', { name: 'New Build', exact: true });
+    this.page.getByRole('button', { name: 'New Build', exact: true });
 
   // Stats
   totalBuildsCard = () => this.page.getByText(/Total Builds/i);
@@ -37,15 +37,13 @@ export class Dashboard {
   quickActionsHeading = () =>
     this.page.getByRole('heading', { name: /Quick Actions/i });
   createNewBuildQuickAction = () =>
-    this.page.getByRole('link', {
-      name: /Create New Build/i,
-      exact: false,
+    this.page.getByRole('button', {
+      name: /Create New Build/i
     }).filter({ hasText: 'Add a new creation' });
   managePostsQuickAction = () =>
     this.page.getByRole('link', {
-      name: /Manage Posts/i,
-      exact: false,
-    });
+      name: /Manage Posts/i
+    }).filter({ hasText: 'Manage posts' });
   userSiteQuickAction = () =>
     this.page.getByRole('link', { name: /User Site/i }).filter({
       hasText: 'Open public gallery',

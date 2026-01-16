@@ -10,7 +10,7 @@ test.describe('Admin Dashboard', () => {
     await dashboard.waitForLoad();
   });
 
-  test.only('should display navigation, stats, quick actions, and storage widgets', async () => {
+  test('should display navigation, stats, quick actions, and storage widgets', async () => {
     await expect(dashboard.adminPanelLink()).toBeVisible();
     await expect(dashboard.dashboardNavLink()).toBeVisible();
     await expect(dashboard.postsNavLink()).toBeVisible();

@@ -28,7 +28,7 @@ export class BuildPage {
   buildTitle = () => this.page.getByRole('heading', { name: 'Yoda Pilot' }).filter({ visible: true });
   storyHeader = () => this.page.getByRole('heading', { name: 'The Story' });
   storyBody = () => this.page.getByText('Helicopter with baby Yoda');
-  piecesCount = () => this.page.getByText('255pieces');
+  piecesCount = () => this.page.getByText('181pieces');
   startedDate = () => this.page.getByText('December 3, 2025Started');
   completedDate = () => this.page.getByText('December 4, 2025Completed');
 

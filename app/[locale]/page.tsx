@@ -116,7 +116,7 @@ export default async function LandingPage({
                       {/* Avatar */}
                       <div className="w-full h-full rounded-full overflow-hidden bg-gray-100">
                         <Image
-                          src="/avatar.svg"
+                          src="/images/avatar.svg"
                           alt="Young Master Builder"
                           width={400}
                           height={400}
@@ -167,7 +167,7 @@ export default async function LandingPage({
                   <span className="w-[26px] h-[26px] inline-flex items-center justify-center">
                     <span className="group-hover:hidden text-lg">👤</span>
                     <Image
-                      src="/smiley-lego.png"
+                      src="/images/smiley-lego.png"
                       alt="Smiley Lego"
                       width={26}
                       height={26}

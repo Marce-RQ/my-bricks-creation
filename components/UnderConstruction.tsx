@@ -8,7 +8,7 @@ export default async function UnderConstruction() {
 		<div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
 			<div className="mb-8">
 				<Image
-					src="/under-construction.png"
+					src="/images/under-construction.png"
 					alt="Under Construction"
 					width={374}
 					height={374}

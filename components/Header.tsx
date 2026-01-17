@@ -36,7 +36,7 @@ export default function Header() {
 					<Link href="/" className="flex items-center gap-3 group">
 						<div className="relative">
 							<Image
-								src="/header-brand-image.png"
+								src="/images/header-brand-image.png"
 								alt="Header Brand Image"
 								width={52}
 								height={52}

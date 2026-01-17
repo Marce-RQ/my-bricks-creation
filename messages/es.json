@@ -144,6 +144,22 @@
     "invalidCredentials": "Correo o contraseña inválidos"
   },
 
+  "myStory": {
+    "title": "¡Hola a todos!",
+    "intro": "Tengo 10 años y estoy en 7º grado. Como pueden ver, ¡estoy totalmente obsesionado con los LEGOs! Construí mi primer set cuando tenía apenas 7 años, y no he parado desde entonces.",
+    "passion": "Me encanta hacer proyectos enormes como este estadio. Cuando no estoy construyendo, usualmente estoy afuera jugando fútbol con mis amigos. ¡Gracias por revisar mis cosas!",
+    "brickCountTitle": "Conteo de Piezas en Aumento",
+    "brickCountDesc": "Desde pequeños sets hasta mega construcciones, cada pieza tiene una historia.",
+    "playtimeTitle": "Me encanta el deporte",
+    "playtimeDesc": "Si no estoy construyendo, estoy anotando goles con amigos.",
+    "machinesBuilder": "Constructor de Maquinas",
+    "footballFan": "Fútbol Fan ⚽️",
+    "age": "10 años",
+    "grade": "7º grado",
+    "masterBuilder": "Master Builder",
+    "seeCreations": "Ver mis creaciones",
+    "supportBuilds": "Apóyame"
+  },
   "notFound": {
     "title": "Página No Encontrada",
     "description": "La página que buscas no existe.",

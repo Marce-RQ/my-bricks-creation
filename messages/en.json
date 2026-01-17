@@ -144,6 +144,22 @@
     "invalidCredentials": "Invalid email or password"
   },
 
+  "myStory": {
+    "title": "Hey guys!",
+    "intro": "I'm 10 years old and I'm in the 7th grade. As you can see, I am totally obsessed with LEGOs! I built my first set when I was just 7, and I haven't stopped since.",
+    "passion": "I love making huge projects like this stadium. When I'm not building, I'm usually outside playing football with my friends. Thanks for checking out my stuff!",
+    "brickCountTitle": "Brick Count Rising",
+    "brickCountDesc": "From tiny sets to mega builds, every piece has a story.",
+    "playtimeTitle": "I love sports",
+    "playtimeDesc": "If I'm not building, I'm scoring goals with friends.",
+    "machinesBuilder": "Machines Builder",
+    "footballFan": "Football fan ⚽️",
+    "age": "Age 10",
+    "grade": "7th Grade",
+    "masterBuilder": "Master Builder",
+    "seeCreations": "See my creations",
+    "supportBuilds": "Support my builds"
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "The page you're looking for doesn't exist.",

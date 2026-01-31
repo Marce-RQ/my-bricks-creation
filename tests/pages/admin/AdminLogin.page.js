@@ -29,11 +29,13 @@ export class AdminLoginPage {
     this.page.getByRole('heading', { name: 'Welcome back!' });
 
   //Actions
-  async fillEmail(email) {
+  async fillEmail(email = 'admin@example.com') {
+    //Not a real Admin
     await this.emailInput().fill(email);
   }
 
-  async fillPassword(password) {
+  async fillPassword(password = 'admin123') {
+    //Not a real Admin
     await this.passwordInput().fill(password);
   }
 

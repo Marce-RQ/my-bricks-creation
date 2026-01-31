@@ -7,7 +7,7 @@ test.describe('Admin Dashboard', () => {
   test.beforeEach(async ({ page }) => {
     dashboard = new Dashboard(page);
     await dashboard.goto();
-    await dashboard.waitForLoad();
+    await dashboard.waitForDashboardLoad();
   });
 
   test('should display navigation, stats, quick actions, and storage widgets', async () => {
@@ -36,12 +36,17 @@ test.describe('Admin Dashboard', () => {
     await expect(page).toHaveURL(/\/admin\/posts\/new$/);
   });
 
-  test('should navigate via quick actions to posts and user site', async ({ page }) => {
+  test('Quick Action CTAs functionality', async ({ page }) => {
+    await dashboard.clickCreateNewBuildQuickAction();
+    await expect(page).toHaveURL(/\/admin\/posts\/new$/);
+    await dashboard.goto();
+    await dashboard.waitForDashboardLoad();
+
     await dashboard.clickManagePostsQuickAction();
     await expect(page).toHaveURL(/\/admin\/posts$/);
-
     await dashboard.goto();
-    await dashboard.waitForLoad();
+    await dashboard.waitForDashboardLoad();
+
     await dashboard.clickUserSiteQuickAction();
     await expect(page).toHaveURL('/');
   });

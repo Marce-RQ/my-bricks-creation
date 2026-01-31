@@ -33,17 +33,21 @@ export class Dashboard {
   publishedCard = () => this.page.getByText(/Published/i);
   draftsCard = () => this.page.getByText(/Drafts/i);
 
-  // Quick Actions
+  // Actions
   quickActionsHeading = () =>
     this.page.getByRole('heading', { name: /Quick Actions/i });
   createNewBuildQuickAction = () =>
-    this.page.getByRole('button', {
-      name: /Create New Build/i
-    }).filter({ hasText: 'Add a new creation' });
+    this.page
+      .getByRole('button', {
+        name: /Create New Build/i,
+      })
+      .filter({ hasText: 'Add a new creation' });
   managePostsQuickAction = () =>
-    this.page.getByRole('link', {
-      name: /Manage Posts/i
-    }).filter({ hasText: 'Manage posts' });
+    this.page
+      .getByRole('link', {
+        name: /Manage Posts/i,
+      })
+      .filter({ hasText: 'Manage posts' });
   userSiteQuickAction = () =>
     this.page.getByRole('link', { name: /User Site/i }).filter({
       hasText: 'Open public gallery',
@@ -56,9 +60,8 @@ export class Dashboard {
     this.page.getByText(/Supabase free tier provides 1GB of storage/i);
 
   //Actions
-  async waitForLoad() {
+  async waitForDashboardLoad() {
     await expect(this.welcomeHeading()).toBeVisible();
-    await expect(this.quickActionsHeading()).toBeVisible();
   }
 
   async clickNewBuildButton() {
